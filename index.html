@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amaris Celis | Portafolio Web</title>
+    <meta name="description" content="Portafolio web de Amaris Celis, estudiante de Ingeniería en Sistemas Computacionales.">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <!-- Hoja de estilos -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Librería Rive -->
+    <script src="https://unpkg.com/@rive-app/canvas@2.7.0"></script>
+
+    <!-- Componente Google Model Viewer -->
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+</head>
+
+<body>
+    <!-- FONDO 3D FULLSCREEN -->
+    <div class="bg-3d-container">
+        <!-- Se añade min-camera-orbit para permitir acercarse mucho -->
+        <model-viewer id="setup-model" src="./assets/3d/setup.glb" camera-controls environment-image="neutral"
+            auto-rotate loading="eager" exposure="1.2" min-camera-orbit="auto auto 0.1m" max-field-of-view="45deg" alt="Modelo 3D de mi setup">
+            
+            <!-- Pantalla de carga (Progress Bar) -->
+            <div slot="progress-bar" class="progress-bar-container">
+                <div class="spinner"></div>
+                <p class="progress-text">0%</p>
+                <p class="progress-subtext">Preparando habitación coquette...</p>
+            </div>
+
+            <!-- Overlay para transición de luces -->
+            <div id="lights-overlay" class="lights-overlay hidden">
+                <div class="spinner"></div>
+                <p id="lights-overlay-text">Encendiendo las luces...</p>
+            </div>
+        </model-viewer>
+    </div>
+
+    <!-- BOTONES FLOTANTES DE LA INTERFAZ -->
+    <div class="ui-controls">
+        <button id="menu-toggle" class="coquette-btn">
+            <span class="btn-icon">🌸</span>
+            <span>Mi Información</span>
+        </button>
+
+        <button id="anim-toggle" class="coquette-btn">
+            <span class="btn-icon">🪑</span>
+            <span>Animar Silla de Escritorio</span>
+        </button>
+
+        <div class="switch-container coquette-panel">
+            <span class="switch-label">Luces</span>
+            <label class="switch">
+                <input type="checkbox" id="light-switch">
+                <span class="slider round"></span>
+            </label>
+        </div>
+    </div>
+
+    <!-- TÍTULO DE BIENVENIDA (Contexto) -->
+    <div class="welcome-title">
+        <h1>Amaris Celis</h1>
+        <p>Portafolio Interactivo 3D</p>
+    </div>
+
+    <!-- MENÚ LATERAL DE INFORMACIÓN -->
+    <aside id="info-menu" class="info-menu">
+        <button id="close-menu" class="close-btn">✖</button>
+        
+        <div class="menu-content">
+            <!-- Header -->
+            <header>
+                <h1>Amaris Celis</h1>
+                <p>Ingeniería en Sistemas Computacionales</p>
+            </header>
+
+            <main>
+                <!-- Sección: Sobre mí -->
+                <section id="sobre-mi" class="section">
+                    <h2>Sobre mí</h2>
+                    <p>Soy una estudiante apasionada por la tecnología, la arquitectura de software y el diseño de experiencias
+                        digitales inmersivas. Mi objetivo principal es crear soluciones escalables, eficientes y visualmente
+                        atractivas. Disfruto aprender de forma continua, experimentar con nuevas herramientas web (como WebGL) y
+                        aplicar mis conocimientos de ingeniería en proyectos que combinan lógica con creatividad.</p>
+                </section>
+
+                <!-- Sección: Habilidades -->
+                <section id="habilidades" class="section">
+                    <h2>Habilidades</h2>
+                    <div class="skills-grid">
+                        <div class="skill-card">HTML5 & CSS3</div>
+                        <div class="skill-card">JavaScript (ES6+)</div>
+                        <div class="skill-card">React / Vue</div>
+                        <div class="skill-card">Node.js</div>
+                        <div class="skill-card">Bases de Datos SQL/NoSQL</div>
+                        <div class="skill-card">Git & GitHub</div>
+                        <div class="skill-card">Modelado 3D / WebGL</div>
+                        <div class="skill-card">UI/UX Design</div>
+                    </div>
+                </section>
+
+                <!-- Sección: Proyectos -->
+                <section id="proyectos" class="section">
+                    <h2>Proyectos</h2>
+                    <div class="projects-grid">
+                        <!-- Proyecto 1: Rive + Flutter -->
+                        <div class="project-card">
+                            <div class="canvas-container">
+                                <canvas id="rive-canvas" width="400" height="250"></canvas>
+                            </div>
+                            <h3>Login Interactivo (Flutter + Rive)</h3>
+                            <p>Aplicación móvil desarrollada en Flutter integrando animaciones 2D interactivas con máquinas de estado. El personaje reacciona en tiempo real a los inputs del usuario (seguimiento visual y protección de contraseña).</p>
+                            <a href="https://github.com/AmarisCelis/login_with_rive_animacion_5sa_2026_1" target="_blank" class="project-link">Ver en GitHub ➔</a>
+                        </div>
+
+                        <!-- Proyecto 2: Arquitectura y Base de Datos -->
+                        <div class="project-card">
+                            <div class="placeholder-img" style="background: transparent;">
+                                <img src="./assets/img/db_project.png" alt="Sistema de Reclutamiento MySQL" style="width: 100%; height: 100%; object-fit: cover;">
+                            </div>
+                            <h3>Sistema de Reclutamiento (MySQL)</h3>
+                            <p>Diseño arquitectónico y modelado relacional de bases de datos para un sistema de gestión de reclutamiento de recursos humanos, desarrollado con MySQL Workbench.</p>
+                        </div>
+
+                        <!-- Proyecto 3: Entornos 3D y WebGL -->
+                        <div class="project-card">
+                            <div class="placeholder-img" style="background: transparent;">
+                                <img src="./assets/img/web3d_project.png" alt="Portafolio Web 3D" style="width: 100%; height: 100%; object-fit: cover;">
+                            </div>
+                            <h3>Portafolio Web 3D (Este sitio)</h3>
+                            <p>Desarrollo frontend utilizando HTML5, CSS3, JavaScript y el componente Model-Viewer (WebGL) para renderizar entornos tridimensionales interactivos directamente en el navegador.</p>
+                            <a href="https://github.com/AmarisCelis/mi-portafolio-3d" target="_blank" class="project-link">Ver en GitHub ➔</a>
+                        </div>
+
+                        <!-- Proyecto 4: Gravity Playground -->
+                        <div class="project-card">
+                            <div class="placeholder-img" style="background: transparent;">
+                                <img src="./assets/img/proj_gravity.png" alt="Motor de Gravedad" style="width: 100%; height: 100%; object-fit: cover;">
+                            </div>
+                            <h3>Motor de Gravedad 2D (JavaScript)</h3>
+                            <p>Simulador de físicas 2D interactivo desarrollado en JavaScript ("gravity-playground"). Implementa colisiones, atracción gravitacional y conservación de momento en canvas HTML5.</p>
+                            <a href="https://github.com/AmarisCelis/gravity-playground" target="_blank" class="project-link">Ver en GitHub ➔</a>
+                        </div>
+
+                        <!-- Proyecto 5: Laravel -->
+                        <div class="project-card">
+                            <div class="placeholder-img" style="background: transparent;">
+                                <img src="./assets/img/proj_laravel.png" alt="Dashboard Laravel" style="width: 100%; height: 100%; object-fit: cover;">
+                            </div>
+                            <h3>Sistema Web "Sopitas" (Laravel)</h3>
+                            <p>Plataforma administrativa desarrollada en PHP utilizando el framework Laravel. Implementa arquitectura MVC, migraciones de base de datos y sistema de rutas seguro.</p>
+                        </div>
+
+                        <!-- Proyecto 6: Flutter -->
+                        <div class="project-card">
+                            <div class="placeholder-img" style="background: transparent;">
+                                <img src="./assets/img/proj_flutter.png" alt="App Flutter" style="width: 100%; height: 100%; object-fit: cover;">
+                            </div>
+                            <h3>Aplicación Móvil Híbrida (Flutter)</h3>
+                            <p>Desarrollo de aplicación móvil nativa para Android e iOS utilizando Flutter y Dart. Diseño de interfaces adaptativas con enfoque en la experiencia de usuario (UX/UI).</p>
+                        </div>
+
+                        <!-- Nuevo Proyecto A: UML -->
+                        <div class="project-card">
+                            <div class="placeholder-img" style="background: transparent;">
+                                <img src="./assets/img/proj_uml.png" alt="Diagramas UML" style="width: 100%; height: 100%; object-fit: cover;">
+                            </div>
+                            <h3>Diseño de Sistemas (UML)</h3>
+                            <p>Modelado avanzado de arquitectura de software y diagramas de casos de uso, secuencia y clases utilizando el estándar UML para la materia de Ingeniería de Software.</p>
+                        </div>
+
+                        <!-- Nuevo Proyecto B: QoS -->
+                        <div class="project-card">
+                            <div class="placeholder-img" style="background: transparent;">
+                                <img src="./assets/img/proj_qos.png" alt="Redes y QoS" style="width: 100%; height: 100%; object-fit: cover;">
+                            </div>
+                            <h3>Telecomunicaciones y QoS</h3>
+                            <p>Análisis de topologías de red y configuración de Calidad de Servicio (QoS) en enrutadores para optimización del ancho de banda y priorización de paquetes de datos.</p>
+                        </div>
+
+                        <!-- Nuevo Proyecto C: Signals -->
+                        <div class="project-card">
+                            <div class="placeholder-img" style="background: transparent;">
+                                <img src="./assets/img/proj_signals.png" alt="Modulación de Señales" style="width: 100%; height: 100%; object-fit: cover;">
+                            </div>
+                            <h3>Modulación de Señales</h3>
+                            <p>Simulación matemática y visualización de frecuencias de modulación de señales analógicas y digitales en el ámbito de las Telecomunicaciones.</p>
+                        </div>
+
+                        <!-- Nuevo Proyecto D: SQL Queries -->
+                        <div class="project-card">
+                            <div class="placeholder-img" style="background: transparent;">
+                                <img src="./assets/img/proj_sql_queries.png" alt="Optimización de Consultas SQL" style="width: 100%; height: 100%; object-fit: cover;">
+                            </div>
+                            <h3>Optimización de Consultas (SQL)</h3>
+                            <p>Diseño, ejecución y optimización de consultas (queries) relacionales complejas y procedimientos almacenados en bases de datos de alto rendimiento.</p>
+                        </div>
+
+                        <!-- Nuevo Proyecto E: C# -->
+                        <div class="project-card">
+                            <div class="placeholder-img" style="background: transparent;">
+                                <img src="./assets/img/proj_csharp.png" alt="App de Escritorio C#" style="width: 100%; height: 100%; object-fit: cover;">
+                            </div>
+                            <h3>App de Escritorio (C# / .NET)</h3>
+                            <p>Desarrollo de aplicaciones robustas de escritorio con interfaz gráfica orientada a eventos utilizando el lenguaje C# y el IDE Visual Studio.</p>
+                        </div>
+
+                        <!-- Proyecto 8: Circuitos -->
+                        <div class="project-card">
+                            <div class="placeholder-img" style="background: transparent;">
+                                <img src="./assets/img/proj_circuits.png" alt="Circuitos Electrónicos" style="width: 100%; height: 100%; object-fit: cover;">
+                            </div>
+                            <h3>Diseño Lógico y Arquitectura</h3>
+                            <p>Simulación y diseño de circuitos electrónicos para modulación ASK y FSK utilizando integrados lógicos (Mux 4051/4052). Análisis de simulador de memoria caché.</p>
+                        </div>
+
+                        <!-- Proyecto 9: SQL -->
+                        <div class="project-card">
+                            <div class="placeholder-img" style="background: transparent;">
+                                <img src="./assets/img/proj_sql.png" alt="Scripts SQL" style="width: 100%; height: 100%; object-fit: cover;">
+                            </div>
+                            <h3>Ingeniería de Datos y SQL (JIRA)</h3>
+                            <p>Desarrollo de scripts avanzados de SQL para la inicialización (seeding), extracción y migración de datos relacionales simulando entornos de Jira.</p>
+                        </div>
+
+                        <!-- Proyecto 10: ProModel -->
+                        <div class="project-card">
+                            <div class="placeholder-img" style="background: transparent;">
+                                <img src="./assets/img/proj_promodel.png" alt="Simulación Industrial" style="width: 100%; height: 100%; object-fit: cover;">
+                            </div>
+                            <h3>Simulación Industrial (ProModel)</h3>
+                            <p>Modelado de flujos de procesos y cuellos de botella mediante simulaciones discretas en software ProModel. Análisis estadístico y optimización de sistemas de producción.</p>
+                        </div>
+                    </div>
+                </section>
+            </main>
+
+            <!-- Footer: Contacto y Redes -->
+            <footer>
+                <h2>¡Hablemos!</h2>
+                <p>¿Tienes algún proyecto en mente o quieres conectar?</p>
+                <div class="contact-info">
+                    <p>📞 Teléfono: <a href="tel:9991035952">999 103 5952</a></p>
+                    <p>✉️ Email: <a href="mailto:pricicelis1503@gmail.com">pricicelis1503@gmail.com</a></p>
+                </div>
+                <div class="social-links">
+                    <a href="https://github.com/AmarisCelis" target="_blank" rel="noopener noreferrer">GitHub</a>
+                </div>
+                <p class="copyright">&copy; 2026 Amaris Celis. Todos los derechos reservados.</p>
+            </footer>
+        </div>
+    </aside>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+
+</html>
