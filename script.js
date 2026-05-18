@@ -120,22 +120,52 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // 4. CONTROL DE ANIMACIÓN 3D (SILLA)
+    // 4. CONTROL DE ANIMACIÓN 3D (SILLA Y PUERTA)
     // ==========================================
     const animToggleBtn = document.getElementById('anim-toggle');
-    let isPlaying = false;
+    const animDoorToggleBtn = document.getElementById('anim-door-toggle');
+    let isChairPlaying = false;
+    let isDoorPlaying = false;
 
     if (animToggleBtn && modelViewer) {
         animToggleBtn.addEventListener('click', () => {
             const btnText = animToggleBtn.querySelector('span:last-child');
-            if (isPlaying) {
+            if (isChairPlaying) {
                 modelViewer.pause();
                 if(btnText) btnText.textContent = 'Animar Silla de Escritorio';
             } else {
+                modelViewer.animationName = 'Silla_EscritorioAction';
                 modelViewer.play();
                 if(btnText) btnText.textContent = 'Pausar Silla de Escritorio';
+                
+                if (isDoorPlaying && animDoorToggleBtn) {
+                    isDoorPlaying = false;
+                    const doorText = animDoorToggleBtn.querySelector('span:last-child');
+                    if(doorText) doorText.textContent = 'Animar Puerta';
+                }
             }
-            isPlaying = !isPlaying;
+            isChairPlaying = !isChairPlaying;
+        });
+    }
+
+    if (animDoorToggleBtn && modelViewer) {
+        animDoorToggleBtn.addEventListener('click', () => {
+            const btnText = animDoorToggleBtn.querySelector('span:last-child');
+            if (isDoorPlaying) {
+                modelViewer.pause();
+                if(btnText) btnText.textContent = 'Animar Puerta';
+            } else {
+                modelViewer.animationName = 'Cube.014Action';
+                modelViewer.play();
+                if(btnText) btnText.textContent = 'Pausar Puerta';
+                
+                if (isChairPlaying && animToggleBtn) {
+                    isChairPlaying = false;
+                    const chairText = animToggleBtn.querySelector('span:last-child');
+                    if(chairText) chairText.textContent = 'Animar Silla de Escritorio';
+                }
+            }
+            isDoorPlaying = !isDoorPlaying;
         });
     }
 });
