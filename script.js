@@ -126,6 +126,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const animDoorToggleBtn = document.getElementById('anim-door-toggle');
     let isChairPlaying = false;
     let isDoorPlaying = false;
+    let chairAnimName = 'Silla_EscritorioAction';
+    let doorAnimName = 'Cube.014Action';
+
+    if (modelViewer) {
+        modelViewer.addEventListener('load', () => {
+            const anims = modelViewer.availableAnimations;
+            if (anims && anims.length > 0) {
+                // Autodetectar las animaciones
+                const doorAnim = anims.find(a => a.toLowerCase().includes('cube') || a.toLowerCase().includes('puerta'));
+                // Buscar la animación de la silla que tiene .016, ya que es la activa en tu Blender
+                const chairAnim = anims.find(a => a.toLowerCase().includes('silla') && a.includes('.016'));
+                const fallbackChairAnim = anims.find(a => a.toLowerCase().includes('silla'));
+
+                if (doorAnim) doorAnimName = doorAnim;
+                if (chairAnim) chairAnimName = chairAnim;
+                else if (fallbackChairAnim) chairAnimName = fallbackChairAnim;
+            }
+        });
+    }
 
     if (animToggleBtn && modelViewer) {
         animToggleBtn.addEventListener('click', () => {
@@ -134,7 +153,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 modelViewer.pause();
                 if(btnText) btnText.textContent = 'Animar Silla de Escritorio';
             } else {
-                modelViewer.animationName = 'Silla_EscritorioAction';
+                modelViewer.animationName = chairAnimName;
+                modelViewer.currentTime = 0; // Reiniciar desde el inicio
                 modelViewer.play();
                 if(btnText) btnText.textContent = 'Pausar Silla de Escritorio';
                 
@@ -155,7 +175,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 modelViewer.pause();
                 if(btnText) btnText.textContent = 'Animar Puerta';
             } else {
-                modelViewer.animationName = 'Cube.014Action';
+                modelViewer.animationName = doorAnimName;
+                modelViewer.currentTime = 0; // Reiniciar desde el inicio
                 modelViewer.play();
                 if(btnText) btnText.textContent = 'Pausar Puerta';
                 
