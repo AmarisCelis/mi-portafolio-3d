@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const overlayText = document.getElementById('lights-overlay-text');
 
         // Función para encender/apagar nodos (luces y focos)
-        function toggleLightsAndNodes(keywords, isVisible) {
+        function toggleLightsAndNodes(keywords, isVisible, hideMesh = false) {
             // Buscamos la escena Three.js interna de model-viewer
             const symbols = Object.getOwnPropertySymbols(modelViewer);
             let scene = null;
@@ -109,9 +109,41 @@ document.addEventListener('DOMContentLoaded', () => {
                                     }
                                     node.intensity = 0;
                                 }
+                            } else if (node.isMesh) {
+                                // Si se indica hideMesh explícitamente (ej. para desaparecer la esfera del Sol)
+                                if (hideMesh) {
+                                    node.visible = isVisible;
+                                }
+                                
+                                // Para los focos de las linternas, solo apagamos su brillo (emisión), no los ocultamos
+                                if (node.material) {
+                                    if (isVisible) {
+                                        // Restaurar emisión
+                                        if (node.userData.originalEmissive !== undefined && node.material.emissive) {
+                                            node.material.emissive.copy(node.userData.originalEmissive);
+                                        }
+                                        if (node.userData.originalEmissiveIntensity !== undefined) {
+                                            node.material.emissiveIntensity = node.userData.originalEmissiveIntensity;
+                                        }
+                                    } else {
+                                        // Guardar y apagar emisión
+                                        if (node.userData.originalEmissive === undefined && node.material.emissive) {
+                                            node.userData.originalEmissive = node.material.emissive.clone();
+                                        }
+                                        if (node.userData.originalEmissiveIntensity === undefined) {
+                                            node.userData.originalEmissiveIntensity = node.material.emissiveIntensity !== undefined ? node.material.emissiveIntensity : 1;
+                                        }
+                                        
+                                        if (node.material.emissive) node.material.emissive.setHex(0x000000);
+                                        node.material.emissiveIntensity = 0;
+                                    }
+                                    node.material.needsUpdate = true;
+                                }
                             } else {
-                                // Si es un mesh (el "foco" o "bulbo" brillante) o un Empty, lo ocultamos/mostramos
-                                node.visible = isVisible;
+                                // Para nodos tipo Group u otros (Empty), si el flag hideMesh está activo, los ocultamos
+                                if (hideMesh) {
+                                    node.visible = isVisible;
+                                }
                             }
                         }
                     }
@@ -128,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 setTimeout(() => {
                     modelViewer.exposure = isDay ? 1.2 : 0.2; // Simula Día / Noche
-                    toggleLightsAndNodes(['sol'], isDay); // Oculta el sol
+                    toggleLightsAndNodes(['sol'], isDay, true); // Oculta el sol por completo
                     if (overlay) overlay.classList.add('hidden');
                 }, 800);
             });
@@ -136,13 +168,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (roomLightSwitch) {
             roomLightSwitch.addEventListener('change', (e) => {
-                toggleLightsAndNodes(['luz cuarto', 'foco'], e.target.checked);
+                toggleLightsAndNodes(['luz cuarto', 'foco'], e.target.checked, false);
             });
         }
 
         if (patioLightSwitch) {
             patioLightSwitch.addEventListener('change', (e) => {
-                toggleLightsAndNodes(['linterna', 'patio'], e.target.checked);
+                toggleLightsAndNodes(['linterna', 'patio'], e.target.checked, false);
             });
         }
     }
