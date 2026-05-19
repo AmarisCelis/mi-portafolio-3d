@@ -161,8 +161,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 if(btnText) btnText.textContent = 'Animar Puerta';
             } else {
                 modelViewer.animationName = doorAnimName;
-                modelViewer.currentTime = 4.75; // Saltar los fotogramas vacíos (110 frames = 4.75s)
-                modelViewer.play();
+                // Usamos un pequeño retraso para asegurar que el visor haya cargado la animación antes de saltar el tiempo
+                setTimeout(() => {
+                    modelViewer.currentTime = 4.8; // Saltar los fotogramas vacíos
+                    modelViewer.play();
+                }, 50);
                 if(btnText) btnText.textContent = 'Pausar Puerta';
                 
                 if (isChairPlaying && animToggleBtn) {

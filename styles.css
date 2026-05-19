@@ -39,7 +39,8 @@ body {
     width: 100vw;
     height: 100vh;
     z-index: 1; /* Detrás de todo */
-    background: radial-gradient(circle at center, #fff9fa 0%, #ffeef2 100%);
+    /* Fondo Dark Coquette para resaltar el modelo */
+    background: radial-gradient(circle at center, #6b3f54 0%, #2a1622 100%);
 }
 
 model-viewer {
