@@ -67,9 +67,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 500);
         });
 
-        // 2.2 Lógica de los interruptores de luces y día/noche
         const sunSwitch = document.getElementById('sun-switch');
         const roomLightSwitch = document.getElementById('room-light-switch');
+        const deskLampSwitch = document.getElementById('desk-lamp-switch');
+        const keyboardSwitch = document.getElementById('keyboard-switch');
         const patioLightSwitch = document.getElementById('patio-light-switch');
         
         const overlay = document.getElementById('lights-overlay');
@@ -115,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                     node.visible = isVisible;
                                 }
                                 
-                                // Para los focos de las linternas, solo apagamos su brillo (emisión), no los ocultamos
+                                // Para los focos de las linternas y teclados, apagamos su brillo (emisión), no los ocultamos
                                 if (node.material) {
                                     if (isVisible) {
                                         // Restaurar emisión
@@ -153,14 +154,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (sunSwitch) {
             sunSwitch.addEventListener('change', (e) => {
-                const isDay = e.target.checked;
+                // Invertimos la lógica: Si está apagado (no checked), es de Día. Si se enciende, es Noche.
+                const isNight = e.target.checked;
+                const isDay = !isNight;
+                
                 if (overlay && overlayText) {
                     overlay.classList.remove('hidden');
                     overlayText.textContent = isDay ? "Amaneciendo..." : "Anocheciendo...";
                 }
                 setTimeout(() => {
                     modelViewer.exposure = isDay ? 1.2 : 0.2; // Simula Día / Noche
-                    toggleLightsAndNodes(['sol'], isDay, true); // Oculta el sol por completo
+                    toggleLightsAndNodes(['sol'], isDay, true); // Oculta el sol por completo en la noche
                     if (overlay) overlay.classList.add('hidden');
                 }, 800);
             });
@@ -168,7 +172,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (roomLightSwitch) {
             roomLightSwitch.addEventListener('change', (e) => {
-                toggleLightsAndNodes(['luz cuarto', 'foco'], e.target.checked, false);
+                toggleLightsAndNodes(['luz cuarto'], e.target.checked, false);
+            });
+        }
+
+        if (deskLampSwitch) {
+            deskLampSwitch.addEventListener('change', (e) => {
+                toggleLightsAndNodes(['foco'], e.target.checked, false);
+            });
+        }
+
+        if (keyboardSwitch) {
+            keyboardSwitch.addEventListener('change', (e) => {
+                toggleLightsAndNodes(['teclado', 'tecla'], e.target.checked, false);
             });
         }
 
