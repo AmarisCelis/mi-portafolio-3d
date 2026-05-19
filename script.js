@@ -53,6 +53,33 @@ document.addEventListener('DOMContentLoaded', () => {
         modelViewer.addEventListener('load', () => {
             targetProgress = 100; // Forzamos a llegar a 100
             
+            // Imprimir todos los nodos para depuración en la consola del navegador
+            try {
+                const symbols = Object.getOwnPropertySymbols(modelViewer);
+                let scene = null;
+                for (let s of symbols) {
+                    if (modelViewer[s] && modelViewer[s].type === 'Scene') {
+                        scene = modelViewer[s];
+                        break;
+                    }
+                    if (s.description === 'scene' && modelViewer[s]) {
+                        scene = modelViewer[s];
+                    }
+                }
+                if (scene) {
+                    console.log("=== LISTA DE NODOS DETECTADOS EN EL MODELO 3D ===");
+                    scene.traverse((node) => {
+                        let info = `- "${node.name}" [Tipo: ${node.type}]`;
+                        if (node.isLight) info += ` [LUZ - Intensidad: ${node.intensity}]`;
+                        if (node.isMesh) info += ` [MALLA - Material: ${node.material ? node.material.name : 'ninguno'}]`;
+                        console.log(info);
+                    });
+                    console.log("=================================================");
+                }
+            } catch (err) {
+                console.warn("No se pudieron listar los nodos en la consola:", err);
+            }
+
             // Esperamos un segundo para que el usuario vea el "100%"
             setTimeout(() => {
                 clearInterval(progressInterval);
@@ -118,22 +145,29 @@ document.addEventListener('DOMContentLoaded', () => {
                                     meshNode.visible = isVisible;
                                 }
                                 if (meshNode.material) {
+                                    // CLONAMOS EL MATERIAL para que cada malla controle su brillo de manera independiente.
+                                    // Esto soluciona que las lamparitas y el teclado compartan emisión en el mismo material de Blender.
+                                    if (!meshNode.userData.materialCloned) {
+                                        meshNode.material = meshNode.material.clone();
+                                        meshNode.userData.materialCloned = true;
+                                    }
+                                    
                                     const mat = meshNode.material;
                                     if (isVisible) {
                                         // Restaurar emisión
-                                        if (mat.userData.originalEmissive !== undefined && mat.emissive) {
-                                            mat.emissive.copy(mat.userData.originalEmissive);
+                                        if (meshNode.userData.originalEmissive !== undefined && mat.emissive) {
+                                            mat.emissive.copy(meshNode.userData.originalEmissive);
                                         }
-                                        if (mat.userData.originalEmissiveIntensity !== undefined) {
-                                            mat.emissiveIntensity = mat.userData.originalEmissiveIntensity;
+                                        if (meshNode.userData.originalEmissiveIntensity !== undefined) {
+                                            mat.emissiveIntensity = meshNode.userData.originalEmissiveIntensity;
                                         }
                                     } else {
-                                        // Guardar y apagar emisión (usamos mat.userData para evitar problemas con materiales compartidos)
-                                        if (mat.userData.originalEmissive === undefined && mat.emissive) {
-                                            mat.userData.originalEmissive = mat.emissive.clone();
+                                        // Guardar y apagar emisión (usamos meshNode.userData para evitar problemas con materiales compartidos)
+                                        if (meshNode.userData.originalEmissive === undefined && mat.emissive) {
+                                            meshNode.userData.originalEmissive = mat.emissive.clone();
                                         }
-                                        if (mat.userData.originalEmissiveIntensity === undefined) {
-                                            mat.userData.originalEmissiveIntensity = mat.emissiveIntensity !== undefined ? mat.emissiveIntensity : 1;
+                                        if (meshNode.userData.originalEmissiveIntensity === undefined) {
+                                            meshNode.userData.originalEmissiveIntensity = mat.emissiveIntensity !== undefined ? mat.emissiveIntensity : 1;
                                         }
                                         
                                         if (mat.emissive) mat.emissive.setHex(0x000000);
@@ -189,7 +223,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (roomLightSwitch) {
             roomLightSwitch.addEventListener('change', (e) => {
-                toggleLightsAndNodes(['luz cuarto', 'luz_cuarto'], e.target.checked, false);
+                toggleLightsAndNodes(['luz cuarto', 'luz_cuarto', 'cuarto'], e.target.checked, false);
             });
         }
 
