@@ -203,27 +203,55 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        if (sunSwitch) {
-            sunSwitch.addEventListener('change', (e) => {
-                // Invertimos la lógica: Si está apagado (no checked), es de Día. Si se enciende, es Noche.
-                const isNight = e.target.checked;
-                const isDay = !isNight;
-                
-                if (overlay && overlayText) {
-                    overlay.classList.remove('hidden');
-                    overlayText.textContent = isDay ? "Amaneciendo..." : "Anocheciendo...";
+        // Función para sincronizar la iluminación global basada en el sol y la luz del cuarto
+        function updateRoomIllumination(showTransitionOverlay = false, overlayMsg = "") {
+            const isNight = sunSwitch ? sunSwitch.checked : false;
+            const isRoomLightOn = roomLightSwitch ? roomLightSwitch.checked : true;
+            
+            let targetExposure = 1.2;
+            if (isNight) {
+                if (isRoomLightOn) {
+                    targetExposure = 0.95; // Habitación acogedora iluminada de noche
+                } else {
+                    targetExposure = 0.15; // Noche oscura sin luces principales
                 }
+            } else {
+                if (isRoomLightOn) {
+                    targetExposure = 1.2; // Día completo con luz encendida
+                } else {
+                    targetExposure = 0.9; // Día con luz apagada (interior más suave)
+                }
+            }
+
+            if (showTransitionOverlay && overlay && overlayText) {
+                overlay.classList.remove('hidden');
+                overlayText.textContent = overlayMsg;
                 setTimeout(() => {
-                    modelViewer.exposure = isDay ? 1.2 : 0.2; // Simula Día / Noche
-                    toggleLightsAndNodes(['sol'], isDay, true); // Oculta el sol por completo en la noche
+                    modelViewer.exposure = targetExposure;
                     if (overlay) overlay.classList.add('hidden');
                 }, 800);
+            } else {
+                modelViewer.exposure = targetExposure;
+            }
+        }
+
+        if (sunSwitch) {
+            sunSwitch.addEventListener('change', (e) => {
+                const isNight = e.target.checked;
+                const isDay = !isNight;
+                const msg = isDay ? "Amaneciendo..." : "Anocheciendo...";
+                
+                updateRoomIllumination(true, msg);
+                toggleLightsAndNodes(['sol'], isDay, true); // Oculta el sol en la noche
             });
         }
 
         if (roomLightSwitch) {
             roomLightSwitch.addEventListener('change', (e) => {
+                // Controla cualquier nodo de luz real si existiese en el modelo
                 toggleLightsAndNodes(['luz cuarto', 'luz_cuarto', 'cuarto'], e.target.checked, false);
+                // Simula el encendido/apagado dinámico mediante exposición
+                updateRoomIllumination(false);
             });
         }
 
@@ -244,6 +272,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 toggleLightsAndNodes(['linterna', 'patio'], e.target.checked, false);
             });
         }
+
+        // Sincronizar el estado de la iluminación global al cargar la página
+        updateRoomIllumination(false);
     }
 
     // ==========================================
