@@ -75,30 +75,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const overlay = document.getElementById('lights-overlay');
         const overlayText = document.getElementById('lights-overlay-text');
 
-        // Función para encender/apagar nodos y materiales
-        function toggleLightsAndNodes(keywords, isVisible, hideMesh = false) {
-            // 1. Alternar Materiales (vía API nativa de model-viewer)
-            if (modelViewer.model && modelViewer.model.materials) {
-                modelViewer.model.materials.forEach(mat => {
-                    const nameLower = mat.name.toLowerCase();
-                    const match = keywords.some(kw => nameLower.includes(kw.toLowerCase()));
-                    if (match) {
-                        if (isVisible) {
-                            if (mat.userData && mat.userData.originalEmissive !== undefined) {
-                                mat.setEmissiveFactor(mat.userData.originalEmissive);
-                            }
-                        } else {
-                            if (!mat.userData) mat.userData = {};
-                            if (mat.userData.originalEmissive === undefined) {
-                                mat.userData.originalEmissive = [...mat.emissiveFactor];
-                            }
-                            mat.setEmissiveFactor([0, 0, 0]);
-                        }
-                    }
-                });
-            }
-
-            // 2. Alternar Nodos en la escena Three.js subyacente
+        // Función para encender/apagar nodos (luces y focos)
+        function toggleLightsAndNodes(keywords, isVisible) {
+            // Buscamos la escena Three.js interna de model-viewer
             const symbols = Object.getOwnPropertySymbols(modelViewer);
             let scene = null;
             for (let s of symbols) {
@@ -116,7 +95,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (node.name) {
                         const nameLower = node.name.toLowerCase();
                         const match = keywords.some(kw => nameLower.includes(kw.toLowerCase()));
+                        
+                        // Si el nombre del nodo coincide (ej. Linterna.001, Luz_Linterna, Sol, Foco)
                         if (match) {
+                            // Si es una luz física (exportada con Punctual Lights)
                             if (node.isLight) {
                                 node.visible = isVisible;
                                 if (isVisible) {
@@ -127,22 +109,9 @@ document.addEventListener('DOMContentLoaded', () => {
                                     }
                                     node.intensity = 0;
                                 }
-                            } else if (node.isMesh) {
-                                if (hideMesh) node.visible = isVisible;
-                                if (node.material && node.material.emissive) {
-                                    if (isVisible) {
-                                        if (node.userData.originalEmissive) {
-                                            node.material.emissive.copy(node.userData.originalEmissive);
-                                        }
-                                    } else {
-                                        if (!node.userData.originalEmissive) {
-                                            node.userData.originalEmissive = node.material.emissive.clone();
-                                        }
-                                        node.material.emissive.setHex(0x000000);
-                                    }
-                                }
                             } else {
-                                if (hideMesh) node.visible = isVisible;
+                                // Si es un mesh (el "foco" o "bulbo" brillante) o un Empty, lo ocultamos/mostramos
+                                node.visible = isVisible;
                             }
                         }
                     }
@@ -159,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 setTimeout(() => {
                     modelViewer.exposure = isDay ? 1.2 : 0.2; // Simula Día / Noche
-                    toggleLightsAndNodes(['sol'], isDay, true); // Oculta el mesh del sol si existe
+                    toggleLightsAndNodes(['sol'], isDay); // Oculta el sol
                     if (overlay) overlay.classList.add('hidden');
                 }, 800);
             });
@@ -167,13 +136,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (roomLightSwitch) {
             roomLightSwitch.addEventListener('change', (e) => {
-                toggleLightsAndNodes(['luz cuarto', 'foco'], e.target.checked, false);
+                toggleLightsAndNodes(['luz cuarto', 'foco'], e.target.checked);
             });
         }
 
         if (patioLightSwitch) {
             patioLightSwitch.addEventListener('change', (e) => {
-                toggleLightsAndNodes(['linterna', 'patio'], e.target.checked, false);
+                toggleLightsAndNodes(['linterna', 'patio'], e.target.checked);
             });
         }
     }
