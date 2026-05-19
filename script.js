@@ -97,54 +97,71 @@ document.addEventListener('DOMContentLoaded', () => {
                         const nameLower = node.name.toLowerCase();
                         const match = keywords.some(kw => nameLower.includes(kw.toLowerCase()));
                         
-                        // Si el nombre del nodo coincide (ej. Linterna.001, Luz_Linterna, Sol, Foco)
+                        // Si el nombre del nodo coincide (ej. Linterna.001, Luz_Linterna, Sol, Lamparita)
                         if (match) {
-                            // Si es una luz física (exportada con Punctual Lights)
-                            if (node.isLight) {
-                                node.visible = isVisible;
+                            // Función auxiliar para aplicar estado a una luz física
+                            const applyLightState = (lightNode) => {
+                                lightNode.visible = isVisible;
                                 if (isVisible) {
-                                    node.intensity = node.userData.originalIntensity !== undefined ? node.userData.originalIntensity : 1;
+                                    lightNode.intensity = lightNode.userData.originalIntensity !== undefined ? lightNode.userData.originalIntensity : 1;
                                 } else {
-                                    if (node.userData.originalIntensity === undefined) {
-                                        node.userData.originalIntensity = node.intensity;
+                                    if (lightNode.userData.originalIntensity === undefined) {
+                                        lightNode.userData.originalIntensity = lightNode.intensity;
                                     }
-                                    node.intensity = 0;
+                                    lightNode.intensity = 0;
                                 }
-                            } else if (node.isMesh) {
-                                // Si se indica hideMesh explícitamente (ej. para desaparecer la esfera del Sol)
+                            };
+
+                            // Función auxiliar para aplicar estado a una malla (emisión de material)
+                            const applyMeshState = (meshNode) => {
                                 if (hideMesh) {
-                                    node.visible = isVisible;
+                                    meshNode.visible = isVisible;
                                 }
-                                
-                                // Para los focos de las linternas y teclados, apagamos su brillo (emisión), no los ocultamos
-                                if (node.material) {
+                                if (meshNode.material) {
+                                    const mat = meshNode.material;
                                     if (isVisible) {
                                         // Restaurar emisión
-                                        if (node.userData.originalEmissive !== undefined && node.material.emissive) {
-                                            node.material.emissive.copy(node.userData.originalEmissive);
+                                        if (mat.userData.originalEmissive !== undefined && mat.emissive) {
+                                            mat.emissive.copy(mat.userData.originalEmissive);
                                         }
-                                        if (node.userData.originalEmissiveIntensity !== undefined) {
-                                            node.material.emissiveIntensity = node.userData.originalEmissiveIntensity;
+                                        if (mat.userData.originalEmissiveIntensity !== undefined) {
+                                            mat.emissiveIntensity = mat.userData.originalEmissiveIntensity;
                                         }
                                     } else {
-                                        // Guardar y apagar emisión
-                                        if (node.userData.originalEmissive === undefined && node.material.emissive) {
-                                            node.userData.originalEmissive = node.material.emissive.clone();
+                                        // Guardar y apagar emisión (usamos mat.userData para evitar problemas con materiales compartidos)
+                                        if (mat.userData.originalEmissive === undefined && mat.emissive) {
+                                            mat.userData.originalEmissive = mat.emissive.clone();
                                         }
-                                        if (node.userData.originalEmissiveIntensity === undefined) {
-                                            node.userData.originalEmissiveIntensity = node.material.emissiveIntensity !== undefined ? node.material.emissiveIntensity : 1;
+                                        if (mat.userData.originalEmissiveIntensity === undefined) {
+                                            mat.userData.originalEmissiveIntensity = mat.emissiveIntensity !== undefined ? mat.emissiveIntensity : 1;
                                         }
                                         
-                                        if (node.material.emissive) node.material.emissive.setHex(0x000000);
-                                        node.material.emissiveIntensity = 0;
+                                        if (mat.emissive) mat.emissive.setHex(0x000000);
+                                        mat.emissiveIntensity = 0;
                                     }
-                                    node.material.needsUpdate = true;
+                                    mat.needsUpdate = true;
                                 }
+                            };
+
+                            if (node.isLight) {
+                                applyLightState(node);
+                            } else if (node.isMesh) {
+                                applyMeshState(node);
                             } else {
-                                // Para nodos tipo Group u otros (Empty), si el flag hideMesh está activo, los ocultamos
+                                // Para nodos tipo Group, Object3D u otros que coincidan con la búsqueda (ej. Luz_Cuarto o Lamparita si son grupos)
                                 if (hideMesh) {
                                     node.visible = isVisible;
                                 }
+                                // Recorremos sus hijos para apagar cualquier luz o malla emisiva que contenga
+                                node.traverse((child) => {
+                                    if (child !== node) {
+                                        if (child.isLight) {
+                                            applyLightState(child);
+                                        } else if (child.isMesh) {
+                                            applyMeshState(child);
+                                        }
+                                    }
+                                });
                             }
                         }
                     }
@@ -178,7 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (deskLampSwitch) {
             deskLampSwitch.addEventListener('change', (e) => {
-                toggleLightsAndNodes(['foco'], e.target.checked, false);
+                toggleLightsAndNodes(['lamparita'], e.target.checked, false);
             });
         }
 
