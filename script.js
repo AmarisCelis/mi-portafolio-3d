@@ -126,25 +126,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const animDoorToggleBtn = document.getElementById('anim-door-toggle');
     let isChairPlaying = false;
     let isDoorPlaying = false;
-    let chairAnimName = 'Silla_EscritorioAction';
+    
+    // Asignamos directamente los nombres que vimos en tu archivo para evitar problemas al cargar
+    let chairAnimName = 'Silla_EscritorioAction.016';
     let doorAnimName = 'Cube.014Action';
-
-    if (modelViewer) {
-        modelViewer.addEventListener('load', () => {
-            const anims = modelViewer.availableAnimations;
-            if (anims && anims.length > 0) {
-                // Autodetectar las animaciones
-                const doorAnim = anims.find(a => a.toLowerCase().includes('cube') || a.toLowerCase().includes('puerta'));
-                // Buscar la animación de la silla que tiene .016, ya que es la activa en tu Blender
-                const chairAnim = anims.find(a => a.toLowerCase().includes('silla') && a.includes('.016'));
-                const fallbackChairAnim = anims.find(a => a.toLowerCase().includes('silla'));
-
-                if (doorAnim) doorAnimName = doorAnim;
-                if (chairAnim) chairAnimName = chairAnim;
-                else if (fallbackChairAnim) chairAnimName = fallbackChairAnim;
-            }
-        });
-    }
 
     if (animToggleBtn && modelViewer) {
         animToggleBtn.addEventListener('click', () => {
