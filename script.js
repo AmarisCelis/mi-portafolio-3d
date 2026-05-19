@@ -161,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if(btnText) btnText.textContent = 'Animar Puerta';
             } else {
                 modelViewer.animationName = doorAnimName;
-                modelViewer.currentTime = 0; // Reiniciar desde el inicio
+                modelViewer.currentTime = 4.75; // Saltar los fotogramas vacíos (110 frames = 4.75s)
                 modelViewer.play();
                 if(btnText) btnText.textContent = 'Pausar Puerta';
                 
