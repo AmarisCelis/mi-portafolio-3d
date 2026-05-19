@@ -23,6 +23,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const controlsToggleBtn = document.getElementById('controls-toggle');
     const controlsDrawer = document.getElementById('controls-drawer');
 
+    const closeControlsDrawer = (delay = 0) => {
+        if (controlsDrawer && controlsDrawer.classList.contains('open')) {
+            setTimeout(() => {
+                controlsDrawer.classList.remove('open');
+                if (controlsToggleBtn) {
+                    controlsToggleBtn.classList.remove('active');
+                }
+            }, delay);
+        }
+    };
+
     if (controlsToggleBtn && controlsDrawer) {
         controlsToggleBtn.addEventListener('click', () => {
             controlsDrawer.classList.toggle('open');
@@ -32,8 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Cerrar panel de controles si se abre el menú lateral de información
         if (menuToggleBtn) {
             menuToggleBtn.addEventListener('click', () => {
-                controlsDrawer.classList.remove('open');
-                controlsToggleBtn.classList.remove('active');
+                closeControlsDrawer(0);
             });
         }
     }
@@ -264,6 +274,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 updateRoomIllumination(true, msg);
                 toggleLightsAndNodes(['sol'], isDay, true); // Oculta el sol en la noche
+                closeControlsDrawer(300);
             });
         }
 
@@ -273,24 +284,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 toggleLightsAndNodes(['luz cuarto', 'luz_cuarto', 'cuarto'], e.target.checked, false);
                 // Simula el encendido/apagado dinámico mediante exposición
                 updateRoomIllumination(false);
+                closeControlsDrawer(300);
             });
         }
 
         if (deskLampSwitch) {
             deskLampSwitch.addEventListener('change', (e) => {
                 toggleLightsAndNodes(['lamparita'], e.target.checked, false);
+                closeControlsDrawer(300);
             });
         }
 
         if (keyboardSwitch) {
             keyboardSwitch.addEventListener('change', (e) => {
                 toggleLightsAndNodes(['teclado', 'tecla'], e.target.checked, false);
+                closeControlsDrawer(300);
             });
         }
 
         if (patioLightSwitch) {
             patioLightSwitch.addEventListener('change', (e) => {
                 toggleLightsAndNodes(['linterna', 'patio'], e.target.checked, false);
+                closeControlsDrawer(300);
             });
         }
 
@@ -350,6 +365,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
             isChairPlaying = !isChairPlaying;
+            closeControlsDrawer(0);
         });
     }
 
@@ -375,6 +391,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
             isDoorPlaying = !isDoorPlaying;
+            closeControlsDrawer(0);
         });
     }
 });
