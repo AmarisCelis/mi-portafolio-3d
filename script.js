@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (roomLightSwitch) {
             roomLightSwitch.addEventListener('change', (e) => {
-                toggleLightsAndNodes(['luz cuarto'], e.target.checked, false);
+                toggleLightsAndNodes(['luz cuarto', 'luz_cuarto'], e.target.checked, false);
             });
         }
 
