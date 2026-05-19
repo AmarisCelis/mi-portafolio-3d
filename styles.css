@@ -516,6 +516,19 @@ footer p {
 }
 
 /* =========================================
+   CONTROLES COMPACTOS / COLLAPSIBLE DRAWER
+========================================= */
+.controls-toggle-btn {
+    display: none;
+}
+
+.controls-drawer {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* =========================================
    RESPONSIVE
 ========================================= */
 @media (max-width: 600px) {
@@ -525,16 +538,61 @@ footer p {
         left: 50%;
         transform: translateX(-50%);
         flex-direction: row;
-        flex-wrap: wrap;
         width: 95%;
+        max-width: 480px;
         justify-content: center;
         gap: 10px;
     }
     
+    .coquette-btn {
+        font-size: 0.95rem;
+        padding: 10px 18px;
+    }
+
+    .controls-toggle-btn {
+        display: flex !important;
+    }
+
+    .controls-drawer {
+        position: fixed;
+        bottom: 80px;
+        left: 50%;
+        transform: translateX(-50%) translateY(150%);
+        width: 90%;
+        max-width: 380px;
+        max-height: 60vh;
+        overflow-y: auto;
+        background-color: rgba(255, 240, 245, 0.95); /* Rosa claro coquette */
+        border: 2px solid var(--border-color);
+        border-radius: 24px;
+        padding: 20px;
+        box-shadow: 0 10px 30px var(--shadow-color);
+        backdrop-filter: blur(12px);
+        z-index: 140;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    .controls-drawer.open {
+        transform: translateX(-50%) translateY(0);
+    }
+
     .welcome-title {
         bottom: auto;
-        top: 30px;
-        padding: 10px 25px;
+        top: 20px;
+        padding: 8px 20px;
+        width: auto;
+        max-width: 90%;
+    }
+
+    .welcome-title h1 {
+        font-size: 1.4rem;
+    }
+
+    .welcome-title p {
+        font-size: 0.85rem;
     }
     
     .info-menu {

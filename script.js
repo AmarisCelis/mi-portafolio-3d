@@ -18,6 +18,27 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
+    // 1.2 LÓGICA DE CONTROLES COLAPSABLES (MÓVIL)
+    // ==========================================
+    const controlsToggleBtn = document.getElementById('controls-toggle');
+    const controlsDrawer = document.getElementById('controls-drawer');
+
+    if (controlsToggleBtn && controlsDrawer) {
+        controlsToggleBtn.addEventListener('click', () => {
+            controlsDrawer.classList.toggle('open');
+            controlsToggleBtn.classList.toggle('active');
+        });
+
+        // Cerrar panel de controles si se abre el menú lateral de información
+        if (menuToggleBtn) {
+            menuToggleBtn.addEventListener('click', () => {
+                controlsDrawer.classList.remove('open');
+                controlsToggleBtn.classList.remove('active');
+            });
+        }
+    }
+
+    // ==========================================
     // 2. LÓGICA DEL MODELO 3D Y LUCES
     // ==========================================
     const lightSwitch = document.getElementById('light-switch');
