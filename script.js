@@ -120,13 +120,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     try {
                         const luzCuartoNode = scene.getObjectByName("Luz_Cuarto");
                         if (luzCuartoNode && window.THREE) {
-                            const isRoomLightOn = document.getElementById('room-light-switch') ? document.getElementById('room-light-switch').checked : true;
-                            // Luz puntual cálida y acogedora (0xffebd6), rango limitado a 3.5 metros
+                            const isRoomLightOn = document.getElementById('room-light-switch') ? document.getElementById('room-light-switch').checked : false;
+                            // Luz puntual cálida y acogedora (0xffebd6), rango limitado a 1.8 metros
                             // Esto ilumina el interior del cuarto pero decae completamente antes de atravesar las paredes hacia el exterior
-                            const physicalRoomLight = new THREE.PointLight(0xffebd6, isRoomLightOn ? 12 : 0, 1.8);
+                            const physicalRoomLight = new THREE.PointLight(0xffebd6, isRoomLightOn ? 8 : 0, 1.8);
                             physicalRoomLight.name = "Luz_Cuarto_Fisica";
                             physicalRoomLight.decay = 2.0;
-                            physicalRoomLight.userData.originalIntensity = 12;
+                            physicalRoomLight.userData.originalIntensity = 8;
                             luzCuartoNode.add(physicalRoomLight);
                             console.log("=== Luz física local Luz_Cuarto_Fisica añadida al cuarto ===");
                         }
@@ -263,21 +263,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Función para sincronizar la iluminación global basada en el sol y la luz del cuarto
         function updateRoomIllumination(showTransitionOverlay = false, overlayMsg = "") {
-            const isNight = roomLightSwitch ? roomLightSwitch.checked : false;
-            const isRoomLightOn = isNight;
+            const isNight = sunSwitch ? sunSwitch.checked : false;
+            const isRoomLightOn = roomLightSwitch ? roomLightSwitch.checked : false;
             
             let targetExposure = 1.2;
             if (isNight) {
                 if (isRoomLightOn) {
-                    targetExposure = 0.35; // Noche real (exposición tenue afuera) mientras la luz física local ilumina el cuarto
+                    targetExposure = 0.28; // Cozy night with room light on (not too saturated!)
                 } else {
-                    targetExposure = 0.15; // Noche oscura sin luces principales
+                    targetExposure = 0.12; // Actually dark night when the room light is off!
                 }
             } else {
                 if (isRoomLightOn) {
-                    targetExposure = 1.2; // Día completo con luz encendida
+                    targetExposure = 1.1; // Day with light on
                 } else {
-                    targetExposure = 0.9; // Día con luz apagada (interior más suave)
+                    targetExposure = 0.85; // Day with light off (natural day shadows)
                 }
             }
 
@@ -293,21 +293,24 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        if (roomLightSwitch) {
-            roomLightSwitch.addEventListener('change', (e) => {
+        if (sunSwitch) {
+            sunSwitch.addEventListener('change', (e) => {
                 const isNight = e.target.checked;
                 const isDay = !isNight;
                 const msg = isDay ? "Amaneciendo..." : "Anocheciendo...";
                 
-                // 1. Mostrar la hermosa transición de fundido día/noche
                 updateRoomIllumination(true, msg);
-                
-                // 2. Controlar la visibilidad del sol en el modelo 3D
-                toggleLightsAndNodes(['sol'], isDay, true);
-                
-                // 3. Controlar la luz física del cuarto
-                toggleLightsAndNodes(['luz cuarto', 'luz_cuarto', 'cuarto'], isNight, false);
-                
+                toggleLightsAndNodes(['sol'], isDay, true); // Oculta el sol en la noche
+                closeControlsDrawer(300);
+            });
+        }
+
+        if (roomLightSwitch) {
+            roomLightSwitch.addEventListener('change', (e) => {
+                // Controla cualquier nodo de luz real si existiese en el modelo
+                toggleLightsAndNodes(['luz cuarto', 'luz_cuarto', 'cuarto'], e.target.checked, false);
+                // Simula el encendido/apagado dinámico mediante exposición
+                updateRoomIllumination(false);
                 closeControlsDrawer(300);
             });
         }
@@ -335,10 +338,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Sincronizar el estado de la iluminación global al cargar la página
         updateRoomIllumination(false);
-        if (roomLightSwitch) {
-            const isNightOnLoad = roomLightSwitch.checked;
+        if (sunSwitch) {
+            const isNightOnLoad = sunSwitch.checked;
             toggleLightsAndNodes(['sol'], !isNightOnLoad, true);
-            toggleLightsAndNodes(['luz cuarto', 'luz_cuarto', 'cuarto'], isNightOnLoad, false);
+        }
+        if (roomLightSwitch) {
+            const isRoomLightOnLoad = roomLightSwitch.checked;
+            toggleLightsAndNodes(['luz cuarto', 'luz_cuarto', 'cuarto'], isRoomLightOnLoad, false);
         }
     }
 
