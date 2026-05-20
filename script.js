@@ -263,8 +263,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Función para sincronizar la iluminación global basada en el sol y la luz del cuarto
         function updateRoomIllumination(showTransitionOverlay = false, overlayMsg = "") {
-            const isNight = sunSwitch ? sunSwitch.checked : false;
-            const isRoomLightOn = roomLightSwitch ? roomLightSwitch.checked : true;
+            const isNight = roomLightSwitch ? roomLightSwitch.checked : false;
+            const isRoomLightOn = isNight;
             
             let targetExposure = 1.2;
             if (isNight) {
@@ -293,24 +293,21 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        if (sunSwitch) {
-            sunSwitch.addEventListener('change', (e) => {
+        if (roomLightSwitch) {
+            roomLightSwitch.addEventListener('change', (e) => {
                 const isNight = e.target.checked;
                 const isDay = !isNight;
                 const msg = isDay ? "Amaneciendo..." : "Anocheciendo...";
                 
+                // 1. Mostrar la hermosa transición de fundido día/noche
                 updateRoomIllumination(true, msg);
-                toggleLightsAndNodes(['sol'], isDay, true); // Oculta el sol en la noche
-                closeControlsDrawer(300);
-            });
-        }
-
-        if (roomLightSwitch) {
-            roomLightSwitch.addEventListener('change', (e) => {
-                // Controla cualquier nodo de luz real si existiese en el modelo
-                toggleLightsAndNodes(['luz cuarto', 'luz_cuarto', 'cuarto'], e.target.checked, false);
-                // Simula el encendido/apagado dinámico mediante exposición
-                updateRoomIllumination(false);
+                
+                // 2. Controlar la visibilidad del sol en el modelo 3D
+                toggleLightsAndNodes(['sol'], isDay, true);
+                
+                // 3. Controlar la luz física del cuarto
+                toggleLightsAndNodes(['luz cuarto', 'luz_cuarto', 'cuarto'], isNight, false);
+                
                 closeControlsDrawer(300);
             });
         }
@@ -338,6 +335,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Sincronizar el estado de la iluminación global al cargar la página
         updateRoomIllumination(false);
+        if (roomLightSwitch) {
+            const isNightOnLoad = roomLightSwitch.checked;
+            toggleLightsAndNodes(['sol'], !isNightOnLoad, true);
+            toggleLightsAndNodes(['luz cuarto', 'luz_cuarto', 'cuarto'], isNightOnLoad, false);
+        }
     }
 
     // ==========================================
