@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             const isRoomLightOn = document.getElementById('room-light-switch') ? document.getElementById('room-light-switch').checked : true;
                             // Luz puntual cálida y acogedora (0xffebd6), rango limitado a 3.5 metros
                             // Esto ilumina el interior del cuarto pero decae completamente antes de atravesar las paredes hacia el exterior
-                            const physicalRoomLight = new THREE.PointLight(0xffebd6, isRoomLightOn ? 12 : 0, 2.7);
+                            const physicalRoomLight = new THREE.PointLight(0xffebd6, isRoomLightOn ? 12 : 0, 1.8);
                             physicalRoomLight.name = "Luz_Cuarto_Fisica";
                             physicalRoomLight.decay = 2.0;
                             physicalRoomLight.userData.originalIntensity = 12;
