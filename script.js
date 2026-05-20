@@ -106,6 +106,33 @@ document.addEventListener('DOMContentLoaded', () => {
                         console.log(info);
                     });
                     console.log("=================================================");
+
+                    // Ajustar el rango (distance) y decaimiento (decay) de los reflectores del patio (Luz_Linterna)
+                    // Esto evita que atraviesen las paredes e iluminen el interior de la casa
+                    scene.traverse((node) => {
+                        if (node.isLight && node.name && node.name.toLowerCase().includes('linterna')) {
+                            node.distance = 2.2; // Limitamos el rango de iluminación a 2.2 metros
+                            node.decay = 2.0;    // Decaimiento físico estándar cuadrático
+                        }
+                    });
+
+                    // Instanciar dinámicamente la luz física local del cuarto dentro del nodo "Luz_Cuarto"
+                    try {
+                        const luzCuartoNode = scene.getObjectByName("Luz_Cuarto");
+                        if (luzCuartoNode && window.THREE) {
+                            const isRoomLightOn = document.getElementById('room-light-switch') ? document.getElementById('room-light-switch').checked : true;
+                            // Luz puntual cálida y acogedora (0xffebd6), rango limitado a 3.5 metros
+                            // Esto ilumina el interior del cuarto pero decae completamente antes de atravesar las paredes hacia el exterior
+                            const physicalRoomLight = new THREE.PointLight(0xffebd6, isRoomLightOn ? 12 : 0, 3.5);
+                            physicalRoomLight.name = "Luz_Cuarto_Fisica";
+                            physicalRoomLight.decay = 2.0;
+                            physicalRoomLight.userData.originalIntensity = 12;
+                            luzCuartoNode.add(physicalRoomLight);
+                            console.log("=== Luz física local Luz_Cuarto_Fisica añadida al cuarto ===");
+                        }
+                    } catch (lightErr) {
+                        console.warn("No se pudo agregar la luz física del cuarto:", lightErr);
+                    }
                 }
             } catch (err) {
                 console.warn("No se pudieron listar los nodos en la consola:", err);
@@ -242,7 +269,7 @@ document.addEventListener('DOMContentLoaded', () => {
             let targetExposure = 1.2;
             if (isNight) {
                 if (isRoomLightOn) {
-                    targetExposure = 0.95; // Habitación acogedora iluminada de noche
+                    targetExposure = 0.35; // Noche real (exposición tenue afuera) mientras la luz física local ilumina el cuarto
                 } else {
                     targetExposure = 0.15; // Noche oscura sin luces principales
                 }
