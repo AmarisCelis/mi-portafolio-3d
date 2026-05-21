@@ -687,3 +687,302 @@ footer p {
         gap: 1rem;
     }
 }
+
+/* =========================================
+   REPRODUCTOR DE MÚSICA DE FONDO (COQUETTE)
+   ========================================= */
+.music-player-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 220; /* Flota sobre la barra lateral deslizable .info-menu (z-index: 200) */
+    display: flex;
+    align-items: center;
+    pointer-events: auto;
+}
+
+.music-toggle-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 50px;
+    height: 50px;
+    background-color: var(--card-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 50%;
+    color: var(--text-primary);
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 8px 20px var(--shadow-color);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    outline: none;
+}
+
+.music-toggle-btn:hover {
+    transform: scale(1.08);
+    border-color: var(--accent-hover);
+    box-shadow: 0 10px 25px rgba(255, 145, 164, 0.4);
+    background-color: white;
+}
+
+.music-toggle-btn:active {
+    transform: scale(0.95);
+}
+
+.music-icon {
+    font-size: 1.4rem;
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+.music-toggle-btn.playing .music-icon {
+    display: none;
+}
+
+/* Animación de ondas de sonido */
+.music-waves {
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 3px;
+    width: 24px;
+    height: 20px;
+}
+
+.music-toggle-btn.playing .music-waves {
+    display: flex;
+}
+
+.music-waves span {
+    width: 3px;
+    height: 5px;
+    background-color: var(--text-primary);
+    border-radius: 3px;
+    animation: wave-bounce 1.2s ease-in-out infinite alternate;
+}
+
+/* Tiempos de retardo individuales para las barritas de música */
+.music-waves span:nth-child(1) { animation-delay: 0.1s; }
+.music-waves span:nth-child(2) { animation-delay: 0.4s; }
+.music-waves span:nth-child(3) { animation-delay: 0.2s; }
+.music-waves span:nth-child(4) { animation-delay: 0.6s; }
+
+@keyframes wave-bounce {
+    0% {
+        height: 5px;
+    }
+    100% {
+        height: 20px;
+        background-color: var(--accent-hover);
+    }
+}
+
+/* Tooltip con información del track */
+.music-info-tooltip {
+    position: absolute;
+    right: 60px;
+    top: 50%;
+    transform: translateY(-50%) translateX(10px);
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    padding: 8px 16px;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 20px var(--shadow-color);
+    pointer-events: none;
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    white-space: nowrap;
+    text-align: right;
+}
+
+.music-player-container:hover .music-info-tooltip {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+}
+
+.track-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.track-artist {
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+    margin-top: 1px;
+}
+
+/* =========================================
+   FULLSCREEN LIGHTBOX GALLERY (GLASSMORPHISM)
+   ========================================= */
+.lightbox-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(42, 22, 34, 0.85); /* Fondo oscuro traslúcido coquette */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 300; /* Flota sobre absolutamente todo (incluyendo barra lateral y reproductor) */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+                visibility 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.lightbox-overlay.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.lightbox-close-btn {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    background-color: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: white;
+    font-size: 1.5rem;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    z-index: 310;
+}
+
+.lightbox-close-btn:hover {
+    background-color: var(--accent-hover);
+    border-color: var(--accent-hover);
+    color: white;
+    transform: rotate(90deg) scale(1.1);
+    box-shadow: 0 0 15px var(--accent-hover);
+}
+
+.lightbox-content {
+    position: relative;
+    max-width: 90%;
+    max-height: 85%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transform: scale(0.9);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.lightbox-overlay:not(.hidden) .lightbox-content {
+    transform: scale(1);
+}
+
+.lightbox-content img {
+    max-width: 100%;
+    max-height: 70vh;
+    object-fit: contain;
+    border-radius: 16px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.lightbox-caption-box {
+    margin-top: 15px;
+    width: 100%;
+    max-width: 600px;
+    background-color: rgba(255, 255, 255, 0.15); /* Glassmorphism sobre fondo oscuro */
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    padding: 15px 25px;
+    border-radius: 20px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    color: white;
+    animation: fadeInUp 0.5s ease-out;
+}
+
+.lightbox-caption-box h3 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 800;
+    margin-bottom: 5px;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.lightbox-caption-box p {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.5;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Ajustes de responsividad adicionales para los nuevos componentes flotantes */
+@media (max-width: 600px) {
+    .lightbox-close-btn {
+        top: 15px;
+        right: 15px;
+        width: 38px;
+        height: 38px;
+        font-size: 1.2rem;
+    }
+
+    .lightbox-content {
+        max-width: 95%;
+    }
+
+    .lightbox-content img {
+        max-height: 55vh;
+        border-radius: 12px;
+    }
+
+    .lightbox-caption-box {
+        padding: 10px 15px;
+        border-radius: 15px;
+        margin-top: 10px;
+    }
+
+    .lightbox-caption-box h3 {
+        font-size: 1.1rem;
+    }
+
+    .lightbox-caption-box p {
+        font-size: 0.8rem;
+    }
+    
+    .music-player-container {
+        top: 15px;
+        right: 15px;
+    }
+    
+    .music-toggle-btn {
+        width: 44px;
+        height: 44px;
+    }
+    
+    .music-info-tooltip {
+        right: 52px;
+        padding: 6px 12px;
+        border-radius: 16px;
+    }
+}

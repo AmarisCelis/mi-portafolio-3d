@@ -429,4 +429,115 @@ document.addEventListener('DOMContentLoaded', () => {
             closeControlsDrawer(0);
         });
     }
+
+    // ==========================================
+    // 5. LÓGICA DE LA GALERÍA LIGHTBOX (GLASSMORPHISM)
+    // ==========================================
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const lightboxTitle = document.getElementById('lightbox-title');
+    const lightboxDescription = document.getElementById('lightbox-description');
+    const lightboxClose = document.getElementById('lightbox-close');
+    const galleryCards = document.querySelectorAll('.gallery-card');
+
+    if (lightbox && lightboxImg && lightboxTitle && lightboxDescription && lightboxClose) {
+        galleryCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const img = card.querySelector('.gallery-img');
+                const title = card.querySelector('.gallery-caption h4');
+                const desc = card.querySelector('.gallery-caption p');
+
+                if (img && title && desc) {
+                    lightboxImg.src = img.src;
+                    lightboxImg.alt = img.alt || 'Vista ampliada';
+                    lightboxTitle.textContent = title.textContent;
+                    lightboxDescription.textContent = desc.textContent;
+                    
+                    // Mostrar lightbox quitando la clase hidden
+                    lightbox.classList.remove('hidden');
+                    
+                    // Añadir accesibilidad
+                    lightbox.setAttribute('aria-hidden', 'false');
+                }
+            });
+        });
+
+        const closeLightbox = () => {
+            lightbox.classList.add('hidden');
+            lightbox.setAttribute('aria-hidden', 'true');
+            // Limpiar fuente de imagen con un pequeño retraso tras la animación de salida
+            setTimeout(() => {
+                lightboxImg.src = '';
+            }, 400);
+        };
+
+        lightboxClose.addEventListener('click', closeLightbox);
+
+        // Cerrar al hacer clic fuera del contenido (en el overlay)
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                closeLightbox();
+            }
+        });
+
+        // Cerrar presionando la tecla Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !lightbox.classList.contains('hidden')) {
+                closeLightbox();
+            }
+        });
+    }
+
+    // ==========================================
+    // 6. LÓGICA DEL REPRODUCTOR DE MÚSICA LOFI
+    // ==========================================
+    const musicToggleBtn = document.getElementById('music-toggle-btn');
+    const bgAudio = document.getElementById('bg-audio');
+
+    if (musicToggleBtn && bgAudio) {
+        let fadeInterval = null;
+        const targetVolume = 0.45; // Volumen ideal de fondo suave
+
+        // Inicializar volumen a 0 para fade in inicial si se activa
+        bgAudio.volume = 0;
+
+        function fadeAudioVolume(target, duration, onComplete) {
+            if (fadeInterval) clearInterval(fadeInterval);
+            
+            const startVolume = bgAudio.volume;
+            const steps = 15;
+            const stepTime = duration / steps;
+            const volumeStep = (target - startVolume) / steps;
+            let currentStep = 0;
+
+            fadeInterval = setInterval(() => {
+                currentStep++;
+                bgAudio.volume = Math.max(0, Math.min(1, bgAudio.volume + volumeStep));
+                if (currentStep >= steps) {
+                    clearInterval(fadeInterval);
+                    bgAudio.volume = target;
+                    if (onComplete) onComplete();
+                }
+            }, stepTime);
+        }
+
+        musicToggleBtn.addEventListener('click', () => {
+            if (bgAudio.paused) {
+                // Iniciar reproducción desde volumen 0 y subir gradualmente
+                bgAudio.volume = 0;
+                bgAudio.play().then(() => {
+                    musicToggleBtn.classList.add('playing');
+                    fadeAudioVolume(targetVolume, 800);
+                }).catch(err => {
+                    console.warn("La reproducción automática o interacción de audio fue bloqueada por el navegador:", err);
+                });
+            } else {
+                // Bajar volumen gradualmente y luego pausar
+                fadeAudioVolume(0, 800, () => {
+                    bgAudio.pause();
+                    musicToggleBtn.classList.remove('playing');
+                });
+            }
+        });
+    }
 });

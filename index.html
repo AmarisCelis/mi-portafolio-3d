@@ -310,8 +310,8 @@
                                 <img src="./assets/img/extracted_hl_dds_0000000000139216.webp" class="gallery-img" alt="Hojas de Libro">
                             </div>
                             <div class="gallery-caption">
-                                <h4>Textura: Hojas de Libro</h4>
-                                <p>Textura utilizada para recrear las páginas abiertas y hojas de los libros decorativos.</p>
+                                <h4>Hojas de Libro</h4>
+                                <p>Imagen utilizada para recrear las páginas abiertas y hojas de los libros decorativos.</p>
                             </div>
                         </div>
 
@@ -454,6 +454,36 @@
             </footer>
         </div>
     </aside>
+
+    <!-- REPRODUCTOR DE MÚSICA DE FONDO (COQUETTE) -->
+    <div id="music-player" class="music-player-container">
+        <button id="music-toggle-btn" class="music-toggle-btn" aria-label="Reproducir música de fondo">
+            <span class="music-icon">🎵</span>
+            <div class="music-waves">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </button>
+        <div class="music-info-tooltip">
+            <p class="track-title">Bedtime After a Coffee</p>
+            <p class="track-artist">Barradeen (Lofi)</p>
+        </div>
+        <audio id="bg-audio" loop src="./assets/audio/lofi.mp3"></audio>
+    </div>
+
+    <!-- FULLSCREEN LIGHTBOX GALLERY (GLASSMORPHISM) -->
+    <div id="lightbox" class="lightbox-overlay hidden" role="dialog" aria-modal="true">
+        <button id="lightbox-close" class="lightbox-close-btn" aria-label="Cerrar vista de imagen">✖</button>
+        <div class="lightbox-content">
+            <img id="lightbox-img" src="" alt="Vista ampliada">
+            <div class="lightbox-caption-box">
+                <h3 id="lightbox-title">Título de la Imagen</h3>
+                <p id="lightbox-description">Descripción detallada del recurso...</p>
+            </div>
+        </div>
+    </div>
 
     <!-- Scripts -->
     <script src="script.js"></script>
