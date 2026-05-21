@@ -8,7 +8,7 @@ The core of this portfolio is a fully interactive 3D programmer's setup modeled 
 
 - **Interactive 3D Scene:** A cozy, "coquette" styled programmer's desk and bedroom, fully navigable (rotate, zoom, pan).
 - **Dynamic Lighting:** Day/Night cycle toggle and interactive local lights (desk lamp, keyboard, room light).
-- **Animations:** Triggerable 3D animations directly from the web interface (chair and door movements).
+- **Animation:** Triggerable 3D animation directly from the web interface (movement of the chair and the door).
 - **Responsive UI:** Modern Glassmorphism design elements, collapsible side menus, and mobile-friendly controls.
 - **Rive Integration:** Features a custom 2D animated login state machine built with Flutter and Rive.
 - **Lo-Fi Audio Player:** Integrated background music player with fade-in/fade-out volume transitions.
@@ -23,7 +23,7 @@ The core of this portfolio is a fully interactive 3D programmer's setup modeled 
 
 ## 📦 3D Models & Assets
 
-The main room architecture, desk, monitors, keyboard frame, and overall setup were modeled by me. To enhance the realism and decorative aspect of the scene, the following third-party models were integrated:
+The main room architecture, desk, monitor, keyboard, and overall setup were modeled by me. To enhance the realism and decorative aspect of the scene, the following third-party models were integrated:
 
 1. **PC Cabinet (Chassis):** Main computer tower.
 2. **Cable Connector:** Used for electrical realism.
