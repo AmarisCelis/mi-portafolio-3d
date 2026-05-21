@@ -294,8 +294,15 @@
                 <p>Recursos Visuales y Modelos 3D</p>
             </header>
             <main>
+                <!-- Navegación de pestañas para Créditos -->
+                <nav class="tabs-nav">
+                    <button class="tab-btn active" data-tab="tab-recursos">Recursos Visuales</button>
+                    <button class="tab-btn" data-tab="tab-modelos">Modelos 3D</button>
+                </nav>
+
+                <div class="tab-content">
                 <!-- Sección: Galería de Recursos Visuales -->
-                <section id="galeria-recursos" class="section">
+                <section id="tab-recursos" class="tab-pane section active">
                     <h2>Recursos Visuales del Modelo</h2>
                     <p class="gallery-intro">Para decorar mi habitación interactiva en Blender, integré imágenes dentro de cuadros decorativos y portarretratos. Estas imágenes no son de mi autoría; las recopilé de internet y las usé únicamente con fines decorativos dentro de la escena 3D. Aquí puedes ver de cerca cada una de ellas:</p>
                     
@@ -443,9 +450,17 @@
                             </div>
                         </div>
                     </div>
+                    
+                    <!-- Botón Volver a Pestañas -->
+                    <div style="text-align: center; margin-top: 2.5rem; padding-bottom: 1rem;">
+                        <button class="coquette-btn" onclick="document.querySelector('#credits-menu .tabs-nav').scrollIntoView({behavior: 'smooth'})" style="font-size: 0.85rem; padding: 8px 16px; background: transparent; border: 1px solid var(--accent-color); color: var(--text-color); box-shadow: none;">
+                            ⬆ Volver a Pestañas
+                        </button>
+                    </div>
                 </section>
 
-<section id="modelos-terceros" class="section">
+                <!-- Sección: Modelos 3D -->
+                <section id="tab-modelos" class="tab-pane section">
     <h2>Modelos 3D de Terceros</h2>
     <p class="gallery-intro">Para complementar la ambientación de mi habitación interactiva, integré algunos modelos 3D elaborados por otros artistas. Estos recursos los recopilé de internet y fueron utilizados únicamente con fines decorativos. Aquí puedes ver el detalle de cada uno:</p>
     
@@ -512,7 +527,16 @@
         </div>
 
     </div>
+
+    <!-- Botón Volver a Pestañas -->
+    <div style="text-align: center; margin-top: 2.5rem; padding-bottom: 1rem;">
+        <button class="coquette-btn" onclick="document.querySelector('#credits-menu .tabs-nav').scrollIntoView({behavior: 'smooth'})" style="font-size: 0.85rem; padding: 8px 16px; background: transparent; border: 1px solid var(--accent-color); color: var(--text-color); box-shadow: none;">
+            ⬆ Volver a Pestañas
+        </button>
+    </div>
 </section>
+
+                </div> <!-- /tab-content -->
             
             </main>
         </div>

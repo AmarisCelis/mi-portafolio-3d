@@ -13,8 +13,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     tabBtns.forEach(btn => {
         btn.addEventListener('click', () => {
-            tabBtns.forEach(b => b.classList.remove('active'));
-            tabPanes.forEach(p => p.classList.remove('active'));
+            const parentMenu = btn.closest('.info-menu');
+            if (parentMenu) {
+                const localBtns = parentMenu.querySelectorAll('.tab-btn');
+                const localPanes = parentMenu.querySelectorAll('.tab-pane');
+                localBtns.forEach(b => b.classList.remove('active'));
+                localPanes.forEach(p => p.classList.remove('active'));
+            }
             btn.classList.add('active');
             const targetId = btn.getAttribute('data-tab');
             const targetPane = document.getElementById(targetId);
