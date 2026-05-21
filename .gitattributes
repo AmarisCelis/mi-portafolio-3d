@@ -1,0 +1,19 @@
+# Archivos de texto - normalizar saltos de línea
+* text=auto
+
+# Archivos binarios - nunca modificar saltos de línea
+*.mp3 binary
+*.mp4 binary
+*.webp binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.glb binary
+*.gltf binary
+*.riv binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
