@@ -82,8 +82,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeInteractiveMenuBtn = document.getElementById('close-interactive-menu');
     window.interactiveMenu = document.getElementById('interactive-menu'); // Make global to be used above
 
-    // Remove old references to closeControlsDrawer everywhere below by stubbing it
-    window.closeControlsDrawer = () => {};
+    // Function to close the interactive menu automatically on smaller screens
+    const closeControlsDrawer = (delay = 0) => {
+        if (window.innerWidth <= 768) {
+            setTimeout(() => {
+                if (interactiveMenu && interactiveMenu.classList.contains('open')) {
+                    interactiveMenu.classList.remove('open');
+                    document.body.classList.remove('menu-open');
+                }
+            }, delay);
+        }
+    };
 
     if (interactiveToggleBtn && closeInteractiveMenuBtn && interactiveMenu) {
         interactiveToggleBtn.addEventListener('click', () => {
