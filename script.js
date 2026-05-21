@@ -33,6 +33,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (menuToggleBtn && closeMenuBtn && infoMenu) {
         menuToggleBtn.addEventListener('click', () => {
             infoMenu.classList.add('open');
+            // Cerrar menú de créditos si está abierto
+            if (creditsMenu && creditsMenu.classList.contains('open')) {
+                creditsMenu.classList.remove('open');
+            }
+            if (interactiveMenu && interactiveMenu.classList.contains('open')) {
+                interactiveMenu.classList.remove('open');
+            }
         });
 
         closeMenuBtn.addEventListener('click', () => {
@@ -51,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
         creditsToggleBtn.addEventListener('click', () => {
             creditsMenu.classList.add('open');
             if (infoMenu && infoMenu.classList.contains('open')) infoMenu.classList.remove('open');
-            // Nota: El cajón de controles se cerrará gracias a un listener genérico más abajo
+            if (interactiveMenu && interactiveMenu.classList.contains('open')) interactiveMenu.classList.remove('open');
         });
 
         closeCreditsMenuBtn.addEventListener('click', () => {
@@ -60,40 +67,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // 1.2 LÓGICA DE CONTROLES COLAPSABLES (MÓVIL)
+    // 1.2 LÓGICA DEL MENÚ INTERACTIVO LATERAL
     // ==========================================
-    const controlsToggleBtn = document.getElementById('controls-toggle');
-    const controlsDrawer = document.getElementById('controls-drawer');
+    const interactiveToggleBtn = document.getElementById('controls-toggle'); // Reuse the same button ID
+    const closeInteractiveMenuBtn = document.getElementById('close-interactive-menu');
+    window.interactiveMenu = document.getElementById('interactive-menu'); // Make global to be used above
 
-    const closeControlsDrawer = (delay = 0) => {
-        if (controlsDrawer && controlsDrawer.classList.contains('open')) {
-            setTimeout(() => {
-                controlsDrawer.classList.remove('open');
-                if (controlsToggleBtn) {
-                    controlsToggleBtn.classList.remove('active');
-                }
-            }, delay);
-        }
-    };
+    // Remove old references to closeControlsDrawer everywhere below by stubbing it
+    window.closeControlsDrawer = () => {};
 
-    if (controlsToggleBtn && controlsDrawer) {
-        controlsToggleBtn.addEventListener('click', () => {
-            controlsDrawer.classList.toggle('open');
-            controlsToggleBtn.classList.toggle('active');
+    if (interactiveToggleBtn && closeInteractiveMenuBtn && interactiveMenu) {
+        interactiveToggleBtn.addEventListener('click', () => {
+            interactiveMenu.classList.add('open');
+            if (infoMenu && infoMenu.classList.contains('open')) infoMenu.classList.remove('open');
+            if (creditsMenu && creditsMenu.classList.contains('open')) creditsMenu.classList.remove('open');
         });
 
-        // Cerrar panel de controles si se abre el menú lateral de información o de créditos
-        if (menuToggleBtn) {
-            menuToggleBtn.addEventListener('click', () => {
-                closeControlsDrawer(0);
-                if (creditsMenu) creditsMenu.classList.remove('open');
-            });
-        }
-        if (creditsToggleBtn) {
-            creditsToggleBtn.addEventListener('click', () => {
-                closeControlsDrawer(0);
-            });
-        }
+        closeInteractiveMenuBtn.addEventListener('click', () => {
+            interactiveMenu.classList.remove('open');
+        });
     }
 
     // ==========================================
