@@ -986,3 +986,22 @@ footer p {
         border-radius: 16px;
     }
 }
+/* Efecto de iluminación para la foto de perfil */
+.foto-perfil {
+    width: 180px;
+    height: auto;
+    border-radius: 15px;
+    margin-bottom: 15px;
+    border: 2px solid rgba(255, 182, 193, 0.4);
+    box-shadow: 0 4px 10px rgba(255, 182, 193, 0.2);
+    filter: brightness(0.9); /* Ligeramente oscurecida por defecto */
+    transition: all 0.4s ease-in-out; /* Hace que el cambio sea suave */
+}
+
+/* Lo que pasa cuando el mouse pasa por encima (Hover) */
+.foto-perfil:hover {
+    filter: brightness(1.1); /* Se ilumina */
+    box-shadow: 0 0 20px rgba(255, 182, 193, 0.9); /* Resplandor rosita intenso */
+    transform: scale(1.03); /* Se acerca un poquitito */
+    border: 2px solid rgba(255, 182, 193, 1);
+}
