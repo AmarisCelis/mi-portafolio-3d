@@ -82,29 +82,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeInteractiveMenuBtn = document.getElementById('close-interactive-menu');
     window.interactiveMenu = document.getElementById('interactive-menu'); // Make global to be used above
 
-    // Function to close the interactive menu automatically on smaller screens
-    const closeControlsDrawer = (delay = 0) => {
-        if (window.innerWidth <= 768) {
-            setTimeout(() => {
-                if (interactiveMenu && interactiveMenu.classList.contains('open')) {
-                    interactiveMenu.classList.remove('open');
-                    document.body.classList.remove('menu-open');
-                }
-            }, delay);
-        }
-    };
+    // User requested the menu NOT to close on click, so we leave it open.
+    // Instead we adjust CSS to make it take up less space so they can see the model.
+    const closeControlsDrawer = (delay = 0) => {};
+
 
     if (interactiveToggleBtn && closeInteractiveMenuBtn && interactiveMenu) {
         interactiveToggleBtn.addEventListener('click', () => {
             interactiveMenu.classList.add('open');
-            document.body.classList.add('menu-open');
+            document.body.classList.add('menu-open', 'interactive-open');
             if (infoMenu && infoMenu.classList.contains('open')) infoMenu.classList.remove('open');
             if (creditsMenu && creditsMenu.classList.contains('open')) creditsMenu.classList.remove('open');
         });
 
         closeInteractiveMenuBtn.addEventListener('click', () => {
             interactiveMenu.classList.remove('open');
-            document.body.classList.remove('menu-open');
+            document.body.classList.remove('menu-open', 'interactive-open');
         });
     }
 

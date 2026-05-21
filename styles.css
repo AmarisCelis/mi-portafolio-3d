@@ -760,9 +760,33 @@ footer p {
         bottom: 0;
     }
 
+    /* Shrink the 3D model container when interactive menu is open */
+    body.interactive-open .bg-3d-container {
+        height: 55vh;
+    }
+
+    /* Customize Interactive Menu to leave space for the 3D model */
+    #interactive-menu {
+        height: 45vh;
+    }
+
     .gallery-grid {
         grid-template-columns: 1fr;
         gap: 1rem;
+    }
+
+    /* Make interactive options swipeable horizontally to save vertical space */
+    #interactive-menu .gallery-grid {
+        display: flex;
+        flex-direction: row;
+        overflow-x: auto;
+        padding-bottom: 10px;
+        scroll-snap-type: x mandatory;
+    }
+    
+    #interactive-menu .gallery-card {
+        flex: 0 0 80%;
+        scroll-snap-align: center;
     }
 }
 
