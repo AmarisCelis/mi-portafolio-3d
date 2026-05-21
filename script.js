@@ -7,6 +7,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeMenuBtn = document.getElementById('close-menu');
     const infoMenu = document.getElementById('info-menu');
 
+    // Lógica para pestañas
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabPanes = document.querySelectorAll('.tab-pane');
+
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            tabBtns.forEach(b => b.classList.remove('active'));
+            tabPanes.forEach(p => p.classList.remove('active'));
+            btn.classList.add('active');
+            const targetId = btn.getAttribute('data-tab');
+            const targetPane = document.getElementById(targetId);
+            if (targetPane) targetPane.classList.add('active');
+        });
+    });
+
     if (menuToggleBtn && closeMenuBtn && infoMenu) {
         menuToggleBtn.addEventListener('click', () => {
             infoMenu.classList.add('open');
@@ -14,6 +29,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
         closeMenuBtn.addEventListener('click', () => {
             infoMenu.classList.remove('open');
+        });
+    }
+
+    // ==========================================
+    // 1.1 LÓGICA DEL MENÚ DE CRÉDITOS Y RECURSOS
+    // ==========================================
+    const creditsToggleBtn = document.getElementById('credits-toggle');
+    const closeCreditsMenuBtn = document.getElementById('close-credits-menu');
+    const creditsMenu = document.getElementById('credits-menu');
+
+    if (creditsToggleBtn && closeCreditsMenuBtn && creditsMenu) {
+        creditsToggleBtn.addEventListener('click', () => {
+            creditsMenu.classList.add('open');
+            if (infoMenu && infoMenu.classList.contains('open')) infoMenu.classList.remove('open');
+            // Nota: El cajón de controles se cerrará gracias a un listener genérico más abajo
+        });
+
+        closeCreditsMenuBtn.addEventListener('click', () => {
+            creditsMenu.classList.remove('open');
         });
     }
 
@@ -40,9 +74,15 @@ document.addEventListener('DOMContentLoaded', () => {
             controlsToggleBtn.classList.toggle('active');
         });
 
-        // Cerrar panel de controles si se abre el menú lateral de información
+        // Cerrar panel de controles si se abre el menú lateral de información o de créditos
         if (menuToggleBtn) {
             menuToggleBtn.addEventListener('click', () => {
+                closeControlsDrawer(0);
+                if (creditsMenu) creditsMenu.classList.remove('open');
+            });
+        }
+        if (creditsToggleBtn) {
+            creditsToggleBtn.addEventListener('click', () => {
                 closeControlsDrawer(0);
             });
         }

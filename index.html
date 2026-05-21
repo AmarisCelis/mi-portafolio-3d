@@ -54,7 +54,12 @@
 
         <button id="controls-toggle" class="coquette-btn controls-toggle-btn">
             <span class="btn-icon">🎛️</span>
-            <span>Controles Habitación</span>
+            <span>Interactivo</span>
+        </button>
+
+        <button id="credits-toggle" class="coquette-btn credits-toggle-btn">
+            <span class="btn-icon">🎨</span>
+            <span>Recursos 3D</span>
         </button>
 
         <div id="controls-drawer" class="controls-drawer">
@@ -134,8 +139,17 @@
             </header>
 
             <main>
+                <!-- Navegación de pestañas -->
+                <nav class="tabs-nav">
+                    <button class="tab-btn active" data-tab="tab-sobre-mi">Sobre mí</button>
+                    <button class="tab-btn" data-tab="tab-habilidades">Habilidades</button>
+                    <button class="tab-btn" data-tab="tab-proyectos">Proyectos</button>
+                    <button class="tab-btn" data-tab="tab-contacto">Contacto</button>
+                </nav>
+
+                <div class="tab-content">
                 <!-- Sección: Sobre mí -->
-                <section id="sobre-mi" class="section">
+                <section id="tab-sobre-mi" class="tab-pane section active">
                     <h2>Sobre mí</h2>
                     <p>Soy una estudiante apasionada por la tecnología, la arquitectura de software y el diseño de experiencias
                         digitales inmersivas. Mi objetivo principal es crear soluciones escalables, eficientes y visualmente
@@ -144,7 +158,7 @@
                 </section>
 
                 <!-- Sección: Habilidades -->
-                <section id="habilidades" class="section">
+                <section id="tab-habilidades" class="tab-pane section">
                     <h2>Habilidades</h2>
                     <div class="skills-grid">
                         <div class="skill-card">HTML5 & CSS3</div>
@@ -159,7 +173,7 @@
                 </section>
 
                 <!-- Sección: Proyectos -->
-                <section id="proyectos" class="section">
+                <section id="tab-proyectos" class="tab-pane section">
                     <h2>Proyectos</h2>
                     <div class="projects-grid">
                         <!-- Proyecto 1: Rive + Flutter -->
@@ -288,6 +302,43 @@
                     </div>
                 </section>
 
+                <!-- Sección: Contacto -->
+                <section id="tab-contacto" class="tab-pane section">
+                    
+                <h2>Contacto</h2>
+                <p>Estoy disponible para discutir oportunidades profesionales, proyectos o colaboraciones. Será un placer atenderte.</p>
+                <div class="contact-info">
+                    <p>📞 Teléfono: <a href="tel:9991035952">999 103 5952</a></p>
+                    <p>✉️ Email: <a href="mailto:pricicelis1503@gmail.com">pricicelis1503@gmail.com</a></p>
+                </div>
+                <div class="social-links">
+                    <a href="https://github.com/AmarisCelis" target="_blank" rel="noopener noreferrer">GitHub</a>
+                </div>
+                <p class="copyright">&copy; 2026 Amaris Celis. Todos los derechos reservados.</p>
+            
+                </section>
+                </div> <!-- /tab-content -->
+
+                </main>
+
+            
+        </div>
+    </aside>
+
+    <!-- MENÚ LATERAL DE CRÉDITOS Y RECURSOS -->
+    <aside id="credits-menu" class="info-menu">
+        <button id="close-credits-menu" class="close-btn">✖</button>
+        <div class="menu-content">
+            <header>
+                <div class="profile-photo-area">
+                    <div class="photo-frame" style="font-size: 3rem; background: rgba(255, 255, 255, 0.4); display: flex; align-items: center; justify-content: center;">
+                        🎨
+                    </div>
+                </div>
+                <h1>Recursos 3D</h1>
+                <p>Créditos y Modelos de Terceros</p>
+            </header>
+            <main>
                 <!-- Sección: Galería de Recursos Visuales -->
                 <section id="galeria-recursos" class="section">
                     <h2>Recursos Visuales del Modelo</h2>
@@ -507,21 +558,8 @@
 
     </div>
 </section>
+            
             </main>
-
-            <!-- Footer: Contacto y Redes -->
-            <footer>
-                <h2>Contacto</h2>
-                <p>Estoy disponible para discutir oportunidades profesionales, proyectos o colaboraciones. Será un placer atenderte.</p>
-                <div class="contact-info">
-                    <p>📞 Teléfono: <a href="tel:9991035952">999 103 5952</a></p>
-                    <p>✉️ Email: <a href="mailto:pricicelis1503@gmail.com">pricicelis1503@gmail.com</a></p>
-                </div>
-                <div class="social-links">
-                    <a href="https://github.com/AmarisCelis" target="_blank" rel="noopener noreferrer">GitHub</a>
-                </div>
-                <p class="copyright">&copy; 2026 Amaris Celis. Todos los derechos reservados.</p>
-            </footer>
         </div>
     </aside>
 
