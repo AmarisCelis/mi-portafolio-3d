@@ -638,6 +638,13 @@ footer p {
     transform: scale(1.08);
 }
 
+/* Eliminar fondo blanco de iconos generados */
+.interactive-card .gallery-img {
+    mix-blend-mode: multiply;
+    object-fit: contain;
+    padding: 10px;
+}
+
 .gallery-caption {
     padding: 10px 4px 4px 4px;
     display: flex;
