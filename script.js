@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (menuToggleBtn && closeMenuBtn && infoMenu) {
         menuToggleBtn.addEventListener('click', () => {
             infoMenu.classList.add('open');
+            document.body.classList.add('menu-open');
             // Cerrar menú de créditos si está abierto
             if (creditsMenu && creditsMenu.classList.contains('open')) {
                 creditsMenu.classList.remove('open');
@@ -49,6 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         closeMenuBtn.addEventListener('click', () => {
             infoMenu.classList.remove('open');
+            document.body.classList.remove('menu-open');
         });
     }
 
@@ -62,12 +64,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (creditsToggleBtn && closeCreditsMenuBtn && creditsMenu) {
         creditsToggleBtn.addEventListener('click', () => {
             creditsMenu.classList.add('open');
+            document.body.classList.add('menu-open');
             if (infoMenu && infoMenu.classList.contains('open')) infoMenu.classList.remove('open');
             if (interactiveMenu && interactiveMenu.classList.contains('open')) interactiveMenu.classList.remove('open');
         });
 
         closeCreditsMenuBtn.addEventListener('click', () => {
             creditsMenu.classList.remove('open');
+            document.body.classList.remove('menu-open');
         });
     }
 
@@ -84,12 +88,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (interactiveToggleBtn && closeInteractiveMenuBtn && interactiveMenu) {
         interactiveToggleBtn.addEventListener('click', () => {
             interactiveMenu.classList.add('open');
+            document.body.classList.add('menu-open');
             if (infoMenu && infoMenu.classList.contains('open')) infoMenu.classList.remove('open');
             if (creditsMenu && creditsMenu.classList.contains('open')) creditsMenu.classList.remove('open');
         });
 
         closeInteractiveMenuBtn.addEventListener('click', () => {
             interactiveMenu.classList.remove('open');
+            document.body.classList.remove('menu-open');
         });
     }
 
