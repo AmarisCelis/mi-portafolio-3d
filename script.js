@@ -19,6 +19,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const targetId = btn.getAttribute('data-tab');
             const targetPane = document.getElementById(targetId);
             if (targetPane) targetPane.classList.add('active');
+
+            // Si se abre la pestaña de proyectos, forzamos al canvas a redibujarse para que el oso aparezca
+            if (targetId === 'tab-proyectos' && window.riveInstance) {
+                // Usamos un pequeño timeout para asegurar que el display:block ya se aplicó
+                setTimeout(() => {
+                    window.riveInstance.resizeDrawingSurfaceToCanvas();
+                }, 50);
+            }
         });
     });
 
@@ -395,13 +403,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const riveCanvas = document.getElementById('rive-canvas');
 
         if (riveCanvas) {
-            const r = new rive.Rive({
+            window.riveInstance = new rive.Rive({
                 src: './assets/animated_login_bear.riv',
                 canvas: riveCanvas,
                 autoplay: true,
                 stateMachines: 'Login Machine',
                 onLoad: () => {
-                    r.resizeDrawingSurfaceToCanvas();
+                    window.riveInstance.resizeDrawingSurfaceToCanvas();
                 },
             });
         }
