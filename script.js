@@ -496,18 +496,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (musicToggleBtn && bgAudio) {
         let fadeInterval = null;
-        const targetVolume = 0.45; // Volumen ideal de fondo suave
+        let isAudioPlaying = false;
+        const targetVolume = 0.45;
 
-        // Inicializar volumen a 0 para fade in inicial si se activa
+        // Inicializar volumen a 0
         bgAudio.volume = 0;
+
+        // Log para depurar si el archivo carga correctamente
+        bgAudio.addEventListener('error', (e) => {
+            console.error('Error al cargar el archivo de audio:', e);
+            console.error('Código de error:', bgAudio.error ? bgAudio.error.code : 'desconocido');
+        });
+
+        bgAudio.addEventListener('canplaythrough', () => {
+            console.log('Audio listo para reproducir sin interrupciones.');
+        });
 
         function fadeAudioVolume(target, duration, onComplete) {
             if (fadeInterval) clearInterval(fadeInterval);
             
-            const startVolume = bgAudio.volume;
-            const steps = 15;
+            const steps = 20;
             const stepTime = duration / steps;
-            const volumeStep = (target - startVolume) / steps;
+            const volumeStep = (target - bgAudio.volume) / steps;
             let currentStep = 0;
 
             fadeInterval = setInterval(() => {
@@ -522,19 +532,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         musicToggleBtn.addEventListener('click', () => {
-            if (bgAudio.paused) {
-                // Iniciar reproducción desde volumen 0 y subir gradualmente
+            if (!isAudioPlaying) {
                 bgAudio.volume = 0;
                 bgAudio.play().then(() => {
+                    isAudioPlaying = true;
                     musicToggleBtn.classList.add('playing');
                     fadeAudioVolume(targetVolume, 800);
+                    console.log('Música iniciada correctamente.');
                 }).catch(err => {
-                    console.warn("La reproducción automática o interacción de audio fue bloqueada por el navegador:", err);
+                    console.error('Error al intentar reproducir el audio:', err.name, err.message);
+                    // Si falla, mostrar mensaje al usuario
+                    alert('No se pudo reproducir la música. Asegúrate de interactuar con la página primero.');
                 });
             } else {
-                // Bajar volumen gradualmente y luego pausar
-                fadeAudioVolume(0, 800, () => {
+                isAudioPlaying = false;
+                fadeAudioVolume(0, 600, () => {
                     bgAudio.pause();
+                    bgAudio.currentTime = 0;
                     musicToggleBtn.classList.remove('playing');
                 });
             }
