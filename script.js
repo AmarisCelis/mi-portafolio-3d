@@ -15,8 +15,17 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.addEventListener('click', () => {
             tabBtns.forEach(b => b.classList.remove('active'));
             tabPanes.forEach(p => p.classList.remove('active'));
-            btn.classList.add('active');
+            
             const targetId = btn.getAttribute('data-tab');
+            
+            // Activar todos los botones (arriba y abajo) que apunten a este tab
+            document.querySelectorAll(`.tab-btn[data-tab="${targetId}"]`).forEach(b => b.classList.add('active'));
+            
+            // Hacer scroll hacia arriba suavemente si se presionó desde abajo
+            if (infoMenu) {
+                const menuContent = infoMenu.querySelector('.menu-content');
+                if (menuContent) menuContent.scrollTo({ top: 0, behavior: 'smooth' });
+            }
             const targetPane = document.getElementById(targetId);
             if (targetPane) targetPane.classList.add('active');
 
