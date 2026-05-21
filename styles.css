@@ -179,6 +179,7 @@ input:checked + .slider:before {
     box-shadow: 0 10px 30px var(--shadow-color);
     pointer-events: none; /* Permite arrastrar el modelo 3D a través de este div */
     animation: fadeInUp 1s ease-out;
+    transition: opacity 0.3s ease;
 }
 
 .welcome-title h1 {
@@ -223,7 +224,7 @@ input:checked + .slider:before {
 .close-btn {
     position: absolute;
     top: 20px;
-    right: 20px;
+    left: 20px;
     background: none;
     border: none;
     font-size: 1.5rem;
@@ -737,6 +738,10 @@ footer p {
 
     .welcome-title p {
         font-size: 0.85rem;
+    }
+    
+    body.menu-open .welcome-title {
+        opacity: 0;
     }
     
     .info-menu {
