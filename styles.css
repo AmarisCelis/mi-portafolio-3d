@@ -986,22 +986,68 @@ footer p {
         border-radius: 16px;
     }
 }
-/* Efecto de iluminación para la foto de perfil */
-.foto-perfil {
-    width: 180px;
-    height: auto;
-    border-radius: 15px;
-    margin-bottom: 15px;
-    border: 2px solid rgba(255, 182, 193, 0.4);
-    box-shadow: 0 4px 10px rgba(255, 182, 193, 0.2);
-    filter: brightness(0.9); /* Ligeramente oscurecida por defecto */
-    transition: all 0.4s ease-in-out; /* Hace que el cambio sea suave */
+/* Estilos para el Área de la Foto de Perfil Grande, Clickable y Fina */
+
+/* Contenedor principal para centrar y definir el tamaño general */
+.profile-photo-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px; /* Espacio para que el conjunto "respire" */
+  width: 100%;
+  max-width: 600px; /* Tamaño general máximo, más grande que antes */
+  margin: 0 auto; /* Centrar el bloque completo en la página */
 }
 
-/* Lo que pasa cuando el mouse pasa por encima (Hover) */
-.foto-perfil:hover {
-    filter: brightness(1.1); /* Se ilumina */
-    box-shadow: 0 0 20px rgba(255, 182, 193, 0.9); /* Resplandor rosita intenso */
-    transform: scale(1.03); /* Se acerca un poquitito */
-    border: 2px solid rgba(255, 182, 193, 1);
+/* El enlace que envuelve todo: Asegura que todo el marco sea clickable */
+.profile-link {
+  display: block;
+  width: 100%;
+  text-decoration: none; /* Quitar subrayado si el enlace es a texto */
+  transition: transform 0.3s ease; /* Pequeña animación de lift al hover */
+}
+
+/* Efecto de elevación al pasar el mouse (Hover) */
+.profile-link:hover {
+  transform: translateY(-5px);
+}
+
+/* El Marco Principal: Aquí van el Borde Fino, el Radio y la Sombra */
+.photo-frame {
+  position: relative;
+  width: 100%;
+  /* Define una proporción de aspecto (ej. 3/4 para portrait). 
+     Esto asegura que el marco se adapte perfectamente sin importar la foto. */
+  aspect-ratio: 3 / 4; 
+  background-color: #fff; /* Fondo para asegurar que no se transparente */
+  
+  /* Borde Rosa MUCHO más delgadito (2px es lo ideal para "fino" pero visible) */
+  border: 2px solid #ffb6c1; 
+  
+  /* Esquinas suaves y redondeadas, como en la referencia (image_8.png) */
+  border-radius: 20px;
+  
+  /* Sombra suave y rosita para el efecto "glow" y profundidad */
+  box-shadow: 0 4px 15px rgba(255, 182, 193, 0.3);
+  
+  /* ¡CRUCIAL! Esto obliga a la imagen a recortarse a los contornos del marco,
+     eliminando espacios blancos internos. */
+  overflow: hidden;
+  
+  transition: box-shadow 0.3s ease; /* Transición suave de la sombra */
+}
+
+/* Aumentar la sombra al hover para un efecto de luz interactivo */
+.profile-link:hover .photo-frame {
+  box-shadow: 0 8px 25px rgba(255, 182, 193, 0.6);
+}
+
+/* La Imagen en sí: Se ajusta perfectamente DENTRO del marco */
+.photo-frame img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  /* object-fit: cover es la clave para que la imagen LLENE el contenedor 
+     sin deformarse, recortando lo necesario. */
+  object-fit: cover; 
 }
