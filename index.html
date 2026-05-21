@@ -61,58 +61,6 @@
             <span class="btn-icon">🎨</span>
             <span>Créditos y Recursos</span>
         </button>
-
-        <div id="controls-drawer" class="controls-drawer">
-            <button id="anim-toggle" class="coquette-btn">
-                <span class="btn-icon">🪑</span>
-                <span>Animar Silla de Escritorio</span>
-            </button>
-
-            <button id="anim-door-toggle" class="coquette-btn">
-                <span class="btn-icon">🚪</span>
-                <span>Animar Puerta</span>
-            </button>
-
-            <div class="switch-container coquette-panel">
-                <span class="switch-label">Día / Noche</span>
-                <label class="switch">
-                    <input type="checkbox" id="sun-switch">
-                    <span class="slider round"></span>
-                </label>
-            </div>
-
-            <div class="switch-container coquette-panel">
-                <span class="switch-label">Luz Principal</span>
-                <label class="switch">
-                    <input type="checkbox" id="room-light-switch">
-                    <span class="slider round"></span>
-                </label>
-            </div>
-
-            <div class="switch-container coquette-panel">
-                <span class="switch-label">Lamparitas</span>
-                <label class="switch">
-                    <input type="checkbox" id="desk-lamp-switch" checked>
-                    <span class="slider round"></span>
-                </label>
-            </div>
-
-            <div class="switch-container coquette-panel">
-                <span class="switch-label">Teclado</span>
-                <label class="switch">
-                    <input type="checkbox" id="keyboard-switch" checked>
-                    <span class="slider round"></span>
-                </label>
-            </div>
-
-            <div class="switch-container coquette-panel">
-                <span class="switch-label">Luces del Patio</span>
-                <label class="switch">
-                    <input type="checkbox" id="patio-light-switch" checked>
-                    <span class="slider round"></span>
-                </label>
-            </div>
-        </div>
     </div>
 
     <!-- TÍTULO DE BIENVENIDA (Contexto) -->
@@ -559,6 +507,127 @@
     </div>
 </section>
             
+            </main>
+        </div>
+    </aside>
+
+    <!-- MENÚ LATERAL INTERACTIVO -->
+    <aside id="interactive-menu" class="info-menu">
+        <button id="close-interactive-menu" class="close-btn" aria-label="Cerrar controles">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="menu-content">
+            <header>
+                <div class="profile-photo-area">
+                    <div class="photo-frame">
+                        <img src="./assets/img/control_silla.png" alt="Icono Interactivo Coquette">
+                    </div>
+                </div>
+                <h1>Interactivo</h1>
+                <p>Controles de la Habitación</p>
+            </header>
+            <main>
+                <div class="gallery-grid">
+                    <!-- Silla -->
+                    <div class="gallery-card interactive-card">
+                        <div class="gallery-img-container">
+                            <img src="./assets/img/control_silla.png" alt="Silla de escritorio" class="gallery-img">
+                        </div>
+                        <div class="gallery-caption" style="text-align: center; align-items: center;">
+                            <h4>Silla de Escritorio</h4>
+                            <button id="anim-toggle" class="coquette-btn" style="margin-top: 10px; font-size: 0.8rem; padding: 6px 12px; width: 100%; justify-content: center;">
+                                <span>Animar Silla</span>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Puerta -->
+                    <div class="gallery-card interactive-card">
+                        <div class="gallery-img-container">
+                            <img src="./assets/img/control_puerta.png" alt="Puerta" class="gallery-img">
+                        </div>
+                        <div class="gallery-caption" style="text-align: center; align-items: center;">
+                            <h4>Puerta</h4>
+                            <button id="anim-door-toggle" class="coquette-btn" style="margin-top: 10px; font-size: 0.8rem; padding: 6px 12px; width: 100%; justify-content: center;">
+                                <span>Animar Puerta</span>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Día/Noche -->
+                    <div class="gallery-card interactive-card">
+                        <div class="gallery-img-container">
+                            <img src="./assets/img/control_dia_noche.png" alt="Día / Noche" class="gallery-img">
+                        </div>
+                        <div class="gallery-caption" style="text-align: center; align-items: center;">
+                            <h4>Día / Noche</h4>
+                            <div class="switch-container" style="margin-top: 10px; justify-content: center; width: 100%;">
+                                <label class="switch">
+                                    <input type="checkbox" id="sun-switch">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Luz Principal -->
+                    <div class="gallery-card interactive-card">
+                        <div class="gallery-img-container">
+                            <img src="./assets/img/control_luz_principal.png" alt="Luz Principal" class="gallery-img">
+                        </div>
+                        <div class="gallery-caption" style="text-align: center; align-items: center;">
+                            <h4>Luz Principal</h4>
+                            <div class="switch-container" style="margin-top: 10px; justify-content: center; width: 100%;">
+                                <label class="switch">
+                                    <input type="checkbox" id="room-light-switch">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Lamparitas -->
+                    <div class="gallery-card interactive-card">
+                        <div class="gallery-img-container">
+                            <img src="./assets/img/control_lamparitas.png" alt="Lamparitas" class="gallery-img">
+                        </div>
+                        <div class="gallery-caption" style="text-align: center; align-items: center;">
+                            <h4>Lamparitas</h4>
+                            <div class="switch-container" style="margin-top: 10px; justify-content: center; width: 100%;">
+                                <label class="switch">
+                                    <input type="checkbox" id="desk-lamp-switch" checked>
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Teclado -->
+                    <div class="gallery-card interactive-card">
+                        <div class="gallery-img-container">
+                            <img src="./assets/img/control_teclado.png" alt="Teclado" class="gallery-img">
+                        </div>
+                        <div class="gallery-caption" style="text-align: center; align-items: center;">
+                            <h4>Teclado</h4>
+                            <div class="switch-container" style="margin-top: 10px; justify-content: center; width: 100%;">
+                                <label class="switch">
+                                    <input type="checkbox" id="keyboard-switch" checked>
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Luces del Patio -->
+                    <div class="gallery-card interactive-card">
+                        <div class="gallery-img-container">
+                            <img src="./assets/img/control_patio.png" alt="Luces del Patio" class="gallery-img">
+                        </div>
+                        <div class="gallery-caption" style="text-align: center; align-items: center;">
+                            <h4>Luces del Patio</h4>
+                            <div class="switch-container" style="margin-top: 10px; justify-content: center; width: 100%;">
+                                <label class="switch">
+                                    <input type="checkbox" id="patio-light-switch" checked>
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </main>
         </div>
     </aside>
